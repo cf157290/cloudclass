@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>创建班课</title>
+    <head th:insert="~{import :: head}"></head>
+    <link rel="stylesheet" href="css/fileinput.min.css">
+    <script src="js/fileinput.min.js" type="text/javascript"></script>
+    <script src="js/zh.js" type="text/javascript"></script>
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-1"></div>
+            <div class="col-md-6 col-10">
+
+                    <form action="">
+                        <div class="form-group">
+                            <label for="">学校：</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">院系：</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">班级：</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">课程：</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">课程封面：</label>
+<!--                            <input type="file" name="txt_file" id="txt_file" class="file-loading  form-control" />-->
+                            <input id="input-b6" name="input-b6[]" type="file" class="form-control file-loading">
+                        </div>
+                        <div class="form-group">
+                            <label for="">学期：</label>
+                            <div>开始时间</div>
+                            <input type="date" class="form-control starttime" required>
+                            <div>结束时间</div>
+                            <input type="date" class="form-control endtime" required>
+                        </div>
+                        <button class="btn btn-primary create">创建</button>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-md-3 col-1"></div>
+        </div>
+
+    </div>
+</body>
+<script>
+    $('.create').click(
+        function f() {
+            var starttime=$('.starttime').val();
+            var endtime=$('.endtime').val();
+            if (endtime<starttime){
+                alert("开始时间不能小于结束时间"+starttime);
+                return false;
+            }
+            return true;
+        }
+    );
+
+ /*   $(function () {
+        //0.初始化fileinput
+        var oFileInput = new FileInput();
+        oFileInput.Init("txt_file", "/api/OrderApi/ImportOrder");
+    });
+    //初始化fileinput
+    var FileInput = function () {
+        var oFile = new Object();
+
+        //初始化fileinput控件（第一次初始化）
+        oFile.Init = function(ctrlName, uploadUrl) {
+            var control = $('#' + ctrlName);
+
+            //初始化上传控件的样式
+            control.fileinput({
+                language: 'zh', //设置语言
+                uploadUrl: uploadUrl, //上传的地址
+                allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                showUpload: false, //是否显示上传按钮
+                showCaption: false,//是否显示标题
+                browseClass: "btn btn-primary", //按钮样式
+                //dropZoneEnabled: false,//是否显示拖拽区域
+                //minImageWidth: 50, //图片的最小宽度
+                //minImageHeight: 50,//图片的最小高度
+                //maxImageWidth: 1000,//图片的最大宽度
+                //maxImageHeight: 1000,//图片的最大高度
+                //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+                //minFileCount: 0,
+                maxFileCount: 10, //表示允许同时上传的最大文件个数
+                enctype: 'multipart/form-data',
+                validateInitialCount:true,
+                previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            });
+
+            //导入文件上传完成之后的事件
+            $("#txt_file").on("fileuploaded", function (event, data, previewId, index) {
+                $("#myModal").modal("hide");
+                var data = data.response.lstOrderImport;
+                if (data == undefined) {
+                    toastr.error('文件格式类型不正确');
+                    return;
+                }
+                //1.初始化表格
+                var oTable = new TableInit();
+                oTable.Init(data);
+                $("#div_startimport").show();
+            });
+        }
+        return oFile;
+    };*/
+    $(document).ready(function() {
+        $("#input-b6").fileinput({
+            showUpload: false,
+            dropZoneEnabled: false,
+            maxFileCount: 1,
+            mainClass: "input-group-lg",
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showRemove :true,//显示一处按钮
+            language: 'zh', //设置语言
+            maxFileSize: 1024//文件大小
+        });
+    });
+</script>
+</html>

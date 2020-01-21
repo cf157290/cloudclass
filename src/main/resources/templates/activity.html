@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-活动列表</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<style>
+    li:hover{
+        cursor: pointer;
+    }
+</style>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div th:insert="~{ classnav::classhead}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row" style="height: 150px">
+                <div class="col-7 pr-0 offset-2">
+                    <input type="text" class="form-control mt-5 mr-0" placeholder="根据活动名称搜索">
+                </div>
+                <div class="col-3 pl-0 mt-5">
+                    <button class="btn btn-secondary">搜索</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <ul class="list-unstyled " >
+                        <li class="media mt-1" style="border-bottom: 2px solid silver">
+                            <img src="img/logo.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
+                            <div class="media-body">
+                                <h5 class="mt-0"> <span class="badge badge-success">进行中</span> 活动名称</h5>
+                                开始时间+结束时间
+                            </div>
+                            <a href="www.baidu.com"></a>
+                        </li>
+                        <li class="media mt-1" style="border-bottom: 2px solid silver">
+                            <img src="img/logo.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
+                            <div class="media-body">
+                                <h5 class="mt-0"> <span class="badge badge-secondary">已结束</span>活动名称</h5>
+                                开始时间+结束时间
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    $(function(){
+        /* 单机li进行页面跳转 */
+        $("ul li").click(function(){
+            /*当前标签下的a标签*/
+            var obj = $(this).children("a");
+            /*获取第一个a标签，进行跳转*/
+            window.location.href=$(obj[0]).attr("href");
+        });
+    })
+</script>
+</html>

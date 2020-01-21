@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>网上班课</title>
+		<head th:insert="~{import :: head}"></head>
+	</head>
+	<body>
+	<div th:fragment="nav">
+		<div class="container-fluid bg-light">
+			<div class="container">
+				<div class="row">
+					<div class="col-2">
+						<a href="index" class="navbar-brand">
+							<img src="img/logo.png" alt="" width="30" height="30" class="d-inline-block align-top">
+							我的班课
+						</a>
+					</div>
+					<div class="col-lg-6 col-md-5 col-12"></div>
+					<div class="col-lg-4 col-md-5 col-12">
+						<a href="#" class="navbar-brand">我的题库</a>
+						<img src="img/people.png" alt="" width="40" height="40"class="img-thumbnail d-inline-block">
+						<a href="#" class="navbar-brand align-content-center">姓名</a>
+						<a href="#" class="navbar-brand">退出</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</body>
+</html>
