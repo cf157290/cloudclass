@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-成绩明细</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<style>
+    .stu{
+        height: 210px;
+    }
+    @media (min-width: 749px){
+        .stu{
+            height: 430px;
+        }
+    }
+</style>
+<body>
+<div th:insert="~{navigation::nav}"></div>
+<div th:insert="~{classnav::classhead}"></div>
+<div class="container-fluid bg-light">
+    <div class="container bg-white">
+        <div class="row pl-4 pt-3">班课成员</div>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-4 stu" style="overflow: auto">
+                <input class="form-control" id="demo" type="text" placeholder="搜索">
+
+                <!-- 中部对齐 -->
+                <!--                    <div class="media bg-light">
+                                        <div class="media-left media-middle">
+                                            <a href="#">
+                                                <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                            </a>
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <h4 class="media-heading">姓名</h4>
+                                            学号
+                                        </div>
+                                    </div>-->
+                <!--                    学生列表-->
+                <ul class = "list-group" id = "newList">
+                    <li class = "list-group-item bg-light">
+                        <div class="media">
+                            <div class="media-left media-middle">1
+                                <a href="#">
+                                    <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                </a>
+                            </div>
+                            <div class="media-body ml-3">
+                                <h4 class="media-heading">姓名</h4>
+                                201622033001
+                            </div>
+                        </div>
+                    </li>
+                    <li class = "list-group-item">
+                        <div class="media">
+                            <div class="media-left media-middle">2
+                                <a href="#">
+                                    <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                </a>
+                            </div>
+                            <div class="media-body ml-3">
+                                <h4 class="media-heading">姓名</h4>
+                                学号
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-8 bg-white" style="height: 430px;overflow: auto">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-between">
+                        <p>成绩明细:</p>
+                        <a href="member.html">返回</a>
+                    </div>
+                    <div class="col-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+<!--                        分数明细列表-->
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-between">
+                                        <p>名称</p>
+                                        <p>分数</p>
+                                        <p>时间</p>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('.chengyuan').addClass("active");
+        $('.huodong').removeClass("active");
+
+        /* 单机li进行页面跳转 */
+        $("ul li").click(function(){
+            /*当前标签下的a标签*/
+            var obj = $(this).children("a");
+            /*获取第一个a标签，进行跳转*/
+            window.location.href=$(obj[0]).attr("href");
+        });
+    });
+
+    $(document).ready(function(){
+        $("#demo").on("keyup", function() {
+            var value = $(this).val().toLowerCase();//把字符转换为小写
+            $("#newList li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+</html>
