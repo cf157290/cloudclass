@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-班课详情</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div th:insert="~{ classnav::classhead}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-4 d-flex justify-content-center" style="border-right:1px solid #737383">
+                    <div class="card border-primary" style="width: 165px">
+                        <img src="img/cloud.png" style="height: 165px" alt="" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">教师姓名</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 text-center">
+                    <p class="mt-3">学校:这是学校名称</p>
+                    <p>院系</p>
+                    <p>班级</p>
+                    <p>课程</p>
+                    <p>学期</p>
+                    <button class="btn btn-outline-danger">退出班课</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        $('.xiangqing').addClass("active");
+        $('.huodong').removeClass("active");
+
+        $("ul li").click(function(){
+            /*当前标签下的a标签*/
+            var obj = $(this).children("a");
+            /*获取第一个a标签，进行跳转*/
+            window.location.href=$(obj[0]).attr("href");
+        });
+    });
+</script>
+</html>
