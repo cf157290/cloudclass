@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-消息</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<style>
+    .stu{
+        height: 210px;
+    }
+    @media (min-width: 749px){
+        .stu{
+            height: 430px;
+        }
+    }
+</style>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div th:insert="~{classnav::classhead}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-2">
+                    <div class="nav nav-pills flex-column">
+                        <a href="#tab1" class="nav-link active" data-toggle="tab">班课通知</a>
+                        <a href="#tab2" class="nav-link" data-toggle="tab">消息</a>
+                    </div>
+
+                </div>
+                <div class="col-10">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active"style="height: 500px; overflow: auto" id="tab1">
+
+                            <ul class="list-group">
+<!--                                通知列表-->
+                                <li class="list-group-item">
+                                    <div class="card bg-light">
+                                        <h4 class="card-header">标题</h4>
+                                        <small class="card-title text-info">发布时间</small>
+                                        <p class="card-text">通知内容</p>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab2" style="height: 500px">
+                            <div class="row">
+                                <div class="col-md-3 col-12 stu" style="overflow: auto">
+<!--                                    学生列表-->
+                                    <ul class = "list-group" id = "newList">
+                                        <li class = "list-group-item bg-light">
+                                            <div class="media">
+                                                <div class="media-left media-middle">
+                                                    <a href="#">
+                                                        <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <p class="media-heading">姓名</p>
+                                                    <span class="badge badge-info">1</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class = "list-group-item">
+                                            <div class="media">
+                                                <div class="media-left media-middle">
+                                                    <a href="#">
+                                                        <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <p class="media-heading">姓名</p>
+                                                    <span class="badge badge-info">1</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-9 col-12" style="border: 1px solid #4e555b;border-radius: 10px">
+                                    <div class="row">
+                                        <div class="col-12" style="height: 450px;overflow: auto" >
+                                            <ul class="list-group">
+                                                <li class="list-group-item"style="border: white 0px solid">
+                                                    <div class="media">
+                                                        <div class="media-left media-middle">
+                                                            <a href="#">
+                                                                <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                                            </a>
+                                                        </div>
+                                                        <div class="media-body ml-3">
+                                                            <small class="media-heading">时间</small>
+                                                            <p class="media-body text-info">内容</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="media">
+                                                        <div class="media-body text-right mr-3">
+                                                            <small class="media-heading">时间</small>
+                                                            <p class="media-body text-info">内容</p>
+                                                        </div>
+                                                        <div class="media-middle">
+                                                            <a href="#">
+                                                                <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-8 col-lg-10">
+                                            <input type="text" name="" id="" class="form-control">
+                                        </div>
+                                        <div class="col-4 col-lg-2">
+                                            <button class="btn btn-primary">发送</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        $('.xiaoxi').addClass("active");
+        $('.huodong').removeClass("active");
+
+        $("ul li").click(function(){
+            /*当前标签下的a标签*/
+            var obj = $(this).children("a");
+            /*获取第一个a标签，进行跳转*/
+            window.location.href=$(obj[0]).attr("href");
+        });
+    });
+</script>
+</html>
