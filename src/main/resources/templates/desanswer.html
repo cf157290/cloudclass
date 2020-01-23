@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-班级活动</title>
+    <head th:insert="~{import :: head}"></head>
+    <link rel="stylesheet" href="css/fileinput.min.css">
+    <script src="js/fileinput.min.js" type="text/javascript"></script>
+    <script src="js/zh.js" type="text/javascript"></script>
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div th:insert="~{classnav::classhead}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="mt-3">活动名称</h4>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>题目描述</p>
+                    <div class="media">
+                        <div class="media-left media-middle">
+                            <img src="img/resources.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
+                        </div>
+                        <div class="media-body">
+                            <h5 class="mt-0">资源名称</h5>
+                            <span>文件大小</span>
+                            <span class="ml-3">发布时间</span>
+                            <button class="btn btn-primary btn-sm ml-3">下载文件</button>
+                        </div>
+                        <a href="www.baidu.com"></a>
+                    </div>
+                    <form action="" class="mt-5">
+                        <div class="form-group">
+                            <h5>提交文件</h5>
+                            <input type="file" class="form-control file-loading" id="input" name="file">
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button class="btn btn-primary"style="width: 200px" type="submit">提交</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function() {
+        $("#input").fileinput({
+            showUpload: false,
+            dropZoneEnabled: false,
+            maxFileCount: 1,
+            mainClass: "input-group-lg",
+            //allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showRemove :true,//显示一处按钮
+            language: 'zh', //设置语言
+            maxFileSize: 1024*10//文件大小
+        });
+    });
+    $("ul li").click(function(){
+        /*当前标签下的a标签*/
+        var obj = $(this).children("a");
+        /*获取第一个a标签，进行跳转*/
+        window.location.href=$(obj[0]).attr("href");
+    });
+</script>
+</html>
