@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-班级活动</title>
+    <head th:insert="~{import :: head}"></head>
+    <link href="https://cdn.bootcss.com/awesome-bootstrap-checkbox/v0.2.3/awesome-bootstrap-checkbox.css" rel="stylesheet">
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div th:insert="~{classnav::classhead}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="mt-3">活动名称</h4>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+
+                            <h5>题号</h5>
+                            <p>题干</p>
+                            <img src="img/logo.png" style="max-height: 200px;max-width: 200px" alt="">
+<!--                            单选-->
+                            <form role="form">
+                                <div class="radio radio-info">
+<!--                                    name="name"单选-->
+                                    <input type="radio" name="radio" id="radio" value="option1">
+                                    <label for="radio">
+                                        A:选项A
+                                    </label>
+                                </div>
+                                <div class="radio radio-info">
+                                    <input type="radio" name="radio" id="radio2" value="option2">
+                                    <label for="radio2">
+                                        B:选项B
+                                    </label>
+                                </div>
+                                <div class="radio radio-info">
+                                    <input type="radio" name="radio" id="radio3" value="option2">
+                                    <label for="radio3">
+                                        C:选项C
+                                    </label>
+                                </div>
+                                <div class="radio radio-info">
+                                    <input type="radio" name="radio" id="radio4" value="option2">
+                                    <label for="radio4">
+                                        D:选项D
+                                    </label>
+                                </div>
+                            </form>
+                            <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
+                        </li>
+                        <li class="list-group-item">
+                            <h5>题号</h5>
+                            <p>题干</p>
+                            <img src="img/logo.png" style="max-height: 200px;max-width: 200px" alt="">
+                            <form role="form">
+                                <div class="checkbox checkbox-info">
+                                    <input type="checkbox" id="check"  value="option1">
+                                    <label for="check">
+                                        A:选项A
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-info">
+                                    <input type="checkbox" id="check2" value="option2">
+                                    <label for="check2">
+                                        B:选项B
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-info">
+                                    <input type="checkbox" id="check3" value="option2">
+                                    <label for="check3">
+                                        C:选项C
+                                    </label>
+                                </div>
+                                <div class="checkbox checkbox-info">
+                                    <input type="checkbox" id="check4" value="option2">
+                                    <label for="check4">
+                                        D:选项D
+                                    </label>
+                                </div>
+                            </form>
+                            <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="width: 200px">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--是否提交模态框-->
+    <div class="modal fade" tabindex="-1" id="myModal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    确认要提交吗?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--是否收藏-->
+    <div class="modal fade" tabindex="-1" id="shoucang" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    确认要收藏题目吗?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $("ul li").click(function(){
+        /*当前标签下的a标签*/
+        var obj = $(this).children("a");
+        /*获取第一个a标签，进行跳转*/
+        window.location.href=$(obj[0]).attr("href");
+    });
+</script>
+</html>
