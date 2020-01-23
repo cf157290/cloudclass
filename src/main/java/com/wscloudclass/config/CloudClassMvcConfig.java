@@ -22,6 +22,7 @@ public class CloudClassMvcConfig {
                 registry.addViewController("/details.html").setViewName("/details.html");
                 registry.addViewController("/grade.html").setViewName("/grade.html");
                 registry.addViewController("/message.html").setViewName("/message.html");
+                registry.addViewController("/ranking.html").setViewName("/ranking.html");
             }
         };
     }
