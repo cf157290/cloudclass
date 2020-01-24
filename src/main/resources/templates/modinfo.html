@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-修改信息</title>
+    <head th:insert="~{import :: head}"></head>
+    <link rel="stylesheet" href="css/fileinput.min.css">
+    <script src="js/fileinput.min.js" type="text/javascript"></script>
+    <script src="js/zh.js" type="text/javascript"></script>
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-12 bg-light"style="height: 50px"></div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between">
+                    <h4 class="mt-3">用户信息</h4>
+                    <button class="btn btn-outline-primary mt-3">保存</button>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr>
+                    <div class="row">
+                        <div class="col-12 col-md-4 userimg" style="border-right:1px solid #777777">
+                            <form action="">
+                                <div class="form-group">
+                                    <span>选择头像</span>
+                                    <input type="file" class="file-loading" id="input">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-8 col-12 mt-5">
+                            <div class="row">
+                                <div class="col-4 text-right">
+                                    <p>账号:</p>
+                                    <p>姓名:</p>
+                                    <p>性别:</p>
+                                    <p>出生年份:</p>
+                                    <p>工号/学号:</p>
+                                    <p>所在的学校:</p>
+                                    <p>所在的院系:</p>
+                                </div>
+                                <div class="col-4">
+                                    <p>账号</p>
+                                    <input class="form-control" placeholder="姓名">
+                                    <input class="form-control" placeholder="性别">
+                                    <input class="form-control" placeholder="出生年月">
+                                    <input class="form-control" placeholder="学号/工号">
+                                    <input class="form-control" placeholder="所在的学校">
+                                    <input class="form-control" placeholder="所在的院系">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function() {
+        $("#input").fileinput({
+            showUpload: false,
+            dropZoneEnabled: false,
+            maxFileCount: 1,
+            mainClass: "input-group-lg",
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showRemove :true,//显示一处按钮
+            language: 'zh', //设置语言
+            maxFileSize: 1024//文件大小
+        });
+    });
+</script>
+</html>
