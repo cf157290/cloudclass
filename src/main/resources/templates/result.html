@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>网上班课-个人结果</title>
+    <title>网上班课-统计分析</title>
     <head th:insert="~{import :: head}"></head>
 </head>
 <body>
     <div th:insert="~{navigation::nav}"></div>
     <div th:insert="~{classnav::classhead}"></div>
-</body>
+
     <div class="container-fluid bg-light">
         <div class="container bg-white">
             <div class="row">
@@ -38,6 +38,11 @@
                             <P>A:选项D</P>
                             <span>正确答案:B</span>
                             <span class="ml-3">你的答案:A</span>
+                            <span class="ml-3">正确率:49%</span>
+                            <span class="ml-3">A:1人</span>
+                            <span class="ml-3">B:1人</span>
+                            <span class="ml-3">C:1人</span>
+                            <span class="ml-3">D:1人</span>
                             <hr>
                             <span>解析:</span>
                         </li>
@@ -46,6 +51,7 @@
             </div>
         </div>
     </div>
+</body>
 <script>
     $("ul li").click(function(){
         /*当前标签下的a标签*/
