@@ -27,6 +27,7 @@ public class CloudClassMvcConfig {
                 registry.addViewController("/desanswer.html").setViewName("/desanswer.html");
                 registry.addViewController("/userinfo.html").setViewName("/userinfo.html");
                 registry.addViewController("/modinfo.html").setViewName("/modinfo.html");
+                registry.addViewController("/result.html").setViewName("/result.html");
             }
         };
     }
