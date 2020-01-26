@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-活动列表</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div th:insert="~{ classnav::classhead}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between mt-3">
+                    <span>活动名称</span>
+                    <button class="btn btn-primary">下载全部文件</button>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>姓名</th>
+                            <th>文件名称</th>
+                            <th>提交日期</th>
+                            <th>分值</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Doe</td>
+                            <td>john@example.com
+                                <button class="btn btn-primary"> 下载</button>
+                            </td>
+                            <td>1111/11/11</td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" placeholder="1">
+                                    <div class="input-group-append">
+<!--                                        有默认值则为修改-->
+                                        <button class="btn btn-primary">提交</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
