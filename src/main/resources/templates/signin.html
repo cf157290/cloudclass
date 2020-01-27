@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-签到列表</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<body>
+    <div th:insert="~{navigation::nav}"></div>
+    <div class="container-fluid bg-light">
+        <div class="container bg-white">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between mt-3">
+                    <h4>完成签到列表</h4>
+                    <button class="btn btn-primary">结束签到</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>姓名</th>
+                                <th>学号</th>
+                                <th>签到时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>吖吖</td>
+                                <td>111111111111</td>
+                                <td>11/11/11</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
