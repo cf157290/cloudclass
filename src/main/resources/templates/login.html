@@ -12,6 +12,10 @@
 
     <link rel="stylesheet" href="css/login.css">
     <link rel="icon" href="img/logo.png" type="image/x-icon"/>
+
+<!--    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+    <script src="js/jquery-3.4.1.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -29,18 +33,18 @@
                     <!--<p class="card-text">第三方注册</p>-->
                     <!--<p class="badge-wrap"><a class="badge"><i class="fab fa-facebook-f"></i></a><a class="badge"><i class="fab fa-google"></i></a><a class="badge"><i class="fab fa-twitter"></i></a><a class="badge"><i class="fab fa-github"></i></a></p>-->
                     <!--<p>或者使用您的电子邮箱进行注册</p>-->
-                    <form>
+                    <form onsubmit="return vertify()">
                     	<div class="form-group">
-                            <input class="form-control" type="email" placeholder="邮箱" required="required" />
+                            <input class="form-control" type="email" id="email" placeholder="邮箱(账号)" maxlength="20" required="required" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="password" placeholder="密码" required="required" />
+                            <input class="form-control" type="password" placeholder="密码(6-18位)" required="required" />
                         </div>
                         <div class="form-group">
                             <input class="form-control" type="text" placeholder="姓名" required="required" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="number" placeholder="学号/工号" required="required" />
+                            <input class="form-control" id="number" maxlength="20" type="number" placeholder="学号/工号" required="required" />
                         </div>
                         <button class="btn btn-lg">注册</button>
                     </form>
@@ -69,5 +73,21 @@
         </div>
     </div>
     <script src="js/login.js"></script>
+    <script>
+        function vertify() {
+            var email=$('#email').val();
+            var regEmail=/^([a-zA-Z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$/;
+            var num=$('#number').val();
+            if (!regEmail.test(email)){
+                alert("邮箱格式不正确!")
+                return false;
+            }
+            if (num<0){
+                alert("请输入正确工号/学号")
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
