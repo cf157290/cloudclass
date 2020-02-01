@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost/cloudclass?serverTimezone=UTC"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.wscloudclass.model" targetProject="src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.wscloudclass.mapper"  targetProject="src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table tableName="activity" domainObjectName="Activity" ></table>
+        <table tableName="complete_sign_in" domainObjectName="CompleteSignIn" ></table>
+        <table tableName="course" domainObjectName="Course" ></table>
+        <table tableName="course_info" domainObjectName="CourseInfo" ></table>
+        <table tableName="course_resources" domainObjectName="CourseResources" ></table>
+        <table tableName="description" domainObjectName="Description" ></table>
+        <table tableName="download_resources" domainObjectName="DownloadResources" ></table>
+        <table tableName="file_score" domainObjectName="FileScore" ></table>
+        <table tableName="join_course" domainObjectName="JoinCourse" ></table>
+        <table tableName="message" domainObjectName="Message" ></table>
+        <table tableName="parti_activity" domainObjectName="PartiActivity" ></table>
+        <table tableName="resources" domainObjectName="Resources" ></table>
+        <table tableName="select_activity" domainObjectName="SelectActivity" ></table>
+        <table tableName="selection" domainObjectName="Selection" ></table>
+        <table tableName="sign_in" domainObjectName="SignIn" ></table>
+        <table tableName="submit_file" domainObjectName="SubmitFile" ></table>
+        <table tableName="user" domainObjectName="User" ></table>
+        <table tableName="user_answers" domainObjectName="UserAnswers" ></table>
+        <table tableName="user_fav" domainObjectName="UserFav" ></table>
+
+    </context>
+</generatorConfiguration>

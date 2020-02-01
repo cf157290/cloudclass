@@ -33,18 +33,18 @@
                     <!--<p class="card-text">第三方注册</p>-->
                     <!--<p class="badge-wrap"><a class="badge"><i class="fab fa-facebook-f"></i></a><a class="badge"><i class="fab fa-google"></i></a><a class="badge"><i class="fab fa-twitter"></i></a><a class="badge"><i class="fab fa-github"></i></a></p>-->
                     <!--<p>或者使用您的电子邮箱进行注册</p>-->
-                    <form onsubmit="return vertify()">
+                    <form action="/register" onsubmit="return vertify()" method="post">
                     	<div class="form-group">
-                            <input class="form-control" type="email" id="email" placeholder="邮箱(账号)" maxlength="20" required="required" />
+                            <input class="form-control" type="email" id="email" name="email" placeholder="邮箱(账号)" maxlength="20" required="required" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="password" placeholder="密码(6-18位)" required="required" />
+                            <input class="form-control" type="password" name="password" placeholder="密码(6-18位)" required="required" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="姓名" required="required" />
+                            <input class="form-control" type="text" placeholder="姓名" name="username" required="required" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" id="number" maxlength="20" type="number" placeholder="学号/工号" required="required" />
+                            <input class="form-control" id="number" maxlength="20" name="number" type="number" placeholder="学号/工号" required="required" />
                         </div>
                         <button class="btn btn-lg">注册</button>
                     </form>
