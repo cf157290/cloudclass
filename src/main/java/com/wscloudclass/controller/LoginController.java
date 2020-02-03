@@ -44,7 +44,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam(name = "email") String email,
                         @RequestParam(name = "password") String password,
-                        HttpServletRequest httpServletRequest,
+//                        HttpServletRequest httpServletRequest,
                         HttpServletResponse httpServletResponse,
                         Model model){
         UserExample userExample = new UserExample();
@@ -62,7 +62,7 @@ public class LoginController {
             userDTO.setBirthday(list.get(0).getBirthday());
             userDTO.setCollegeDapartments(list.get(0).getCollegeDapartments());
             userDTO.setSchool(list.get(0).getSchool());
-            httpServletRequest.getSession().setAttribute(token,userDTO);
+//            httpServletRequest.getSession().setAttribute("user",userDTO);
             redisTemplate.opsForValue().set(token,userDTO);
             redisTemplate.expire(token,10, TimeUnit.DAYS);
             return "redirect:/index";
