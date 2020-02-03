@@ -1,6 +1,6 @@
 ﻿
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>网上班课登录</title>
@@ -52,17 +52,21 @@
                 <button class="btn btn-back js-btn" data-target="welcome"><i class="fas fa-angle-left"></i></button>
             </div>
             <div class="card border-0 shadow card--login" id="login">
+
                 <div class="card-body">
                     <h2 class="card-title">欢迎登录网上班课</h2>
+                    <div class="alert alert-danger alert-dismissible" th:if="${erruser}">
+                        <strong>错误!</strong> 用户名或密码错误。
+                    </div>
                    <!-- <p>第三方登录</p>
                     <p class="badge-wrap"><a class="badge"><i class="fab fa-facebook-f"></i></a><a class="badge"><i class="fab fa-google"></i></a><a class="badge"><i class="fab fa-twitter"></i></a><a class="badge"><i class="fab fa-github"></i></a></p>
                     <p>或用邮箱登录</p>-->
-                    <form action="index">
+                    <form action="/login" method="post">
                         <div class="form-group">
-                            <input class="form-control" type="email" placeholder="账号" required="required" />
+                            <input class="form-control" type="email" name="email" placeholder="账号" required="required" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="password" placeholder="密码" required="required" />
+                            <input class="form-control" type="password" name="password" placeholder="密码" required="required" />
                         </div>
                         <p><a href="#">忘记密码?</a></p>
                         <button class="btn btn-lg">登录</button>

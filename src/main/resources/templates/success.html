@@ -10,9 +10,18 @@
         <div class="row">
             <div class="col-12">
                 <p>恭喜您注册成功！,3秒钟后页面将进行跳转</p>
-                <p>如果未跳转请 <a href="">点击这里</a> </p>
+                <p>如果未跳转请 <a th:href="@{/}">点击这里</a> </p>
             </div>
         </div>
     </div>
 </body>
+<script>
+    $(
+        function () {
+            window.setTimeout(function () {
+                location.href="/";
+            },3000);
+        }
+    )
+</script>
 </html>
