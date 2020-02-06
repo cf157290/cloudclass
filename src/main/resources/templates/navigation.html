@@ -22,7 +22,7 @@
 						<img alt="" width="40" height="40"class="img-thumbnail d-inline-block" th:if="${session.user.getImgUrl()} ne null" th:src="${session.user.getImgUrl()}">
 						<img alt="" width="40" height="40"class="img-thumbnail d-inline-block" th:if="${session.user.getImgUrl()} eq null" th:src="@{img/people.png}">
 						<a href="#" class="navbar-brand align-content-center" th:text="${session.user.getUserName()}">姓名</a>
-						<a href="#" class="navbar-brand">退出</a>
+						<a th:href="@{/logOut}" class="navbar-brand">退出</a>
 					</div>
 
 				</div>

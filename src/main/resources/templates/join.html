@@ -13,10 +13,11 @@
                 <div class="col-md-3 col-1 bg-white"></div>
                 <div class="col-md-6 col-9 bg-white pt-5 text-center">
                     <p class="mt-5">请输入班课号</p>
-                    <input type="text" class="form-control mt-5" placeholder="请输入班课号">
+                    <input type="text" id="code" class="form-control mt-5" placeholder="请输入班课号" required>
+                    <span id="message" class="text-danger"></span>
                     <div class="row mt-5">
                         <div class="col-6 d-flex justify-content-end justify-content-md-center">
-                            <button class="btn btn-info btn-lg"data-toggle="modal" data-target="#myModal">查找</button>
+                            <button class="btn btn-info btn-lg" id="search">查找</button>
                         </div>
                         <div class="col-6 d-flex justify-content-start justify-content-md-center">
                             <a href="index">
@@ -28,6 +29,7 @@
                 </div>
                 <div class="col-md-3 col-1 bg-white"></div>
             </div>
+            <button hidden="hidden" data-toggle="modal" data-target="#myModal" id="successSelect"></button>
         </div>
     </div>
 <!--        模态框-->
@@ -41,18 +43,85 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-xl-4">班课名称</div>
-                            <div class="col-xl-8">教师名称</div>
+                            <div class="col-xl-8" id="courseName"></div>
+                            <div class="col-xl-4" id="teacherName"></div>
                         </div>
                     </div>
                 </div>
+                <span id="cid" hidden></span>
+                <span id="uid" hidden th:text="${session.user.getUid()}"></span>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-primary" id="join">加入</button>
                 </div>
             </div>
         </div>
     </div>
 
 </body>
+<script>
+    $('#search').click(function () {
+        var code=$('#code').val();
+        if (code==null||code==""){
+            $('#message').html("请输入邀请码!");
+            return;
+        }
+        $.ajax({
+            //请求方式
+            type : "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url : "/findCourse",
+            //数据，json字符串
+            data : JSON.stringify({
+                "code": code
+            }),
+            //请求成功
+            success : function(result) {
+                var data=$.parseJSON(result);
+                var cid=data.cid;
+                if (cid!=null||data.hasOwnProperty(cid)){
+                    $('#courseName').html("班课名称:"+data.courseName);
+                    $('#teacherName').html("教师姓名:"+data.teacherName);
+                    $('#cid').html(cid);
+                    $('#successSelect').trigger("click");
+                }else {
+                    $('#message').html(data.message);
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                $('#message').html("发送请求失败,请检查您的网络状态!")
+            }
+        });
+    });
+    $('#join').click(function () {
+        $.ajax({
+            //请求方式
+            type : "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //请求地址
+            url : "/joinCourse",
+            //数据，json字符串
+            data : JSON.stringify({
+                "cid":$('#cid').text(),
+                "uid":$('#uid').text()
+            }),
+            //请求成功
+            success : function(result) {
+                var data=$.parseJSON(result);
+                var code=data.code;
+                if (code==1){
+                    location.href="/activity";
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                $('#message').html("发送请求失败,请检查您的网络状态!")
+            }
+        });
+    })
+</script>
 </html>

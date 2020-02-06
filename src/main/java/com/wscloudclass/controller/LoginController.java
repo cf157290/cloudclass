@@ -15,6 +15,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
@@ -83,5 +84,22 @@ public class LoginController {
         }
         model.addAttribute("erruser",true);
         return "/login";
+    }
+    @RequestMapping("/logOut")
+    public String logOut(HttpServletRequest request,HttpServletResponse response){
+        Cookie[] oldCookies=request.getCookies();
+        for (Cookie oldcookie:oldCookies){
+            if (oldcookie.getName().equals("token")){
+                String token=oldcookie.getValue();
+                RedisSerializer redisSerializer=new StringRedisSerializer();
+                redisTemplate.setKeySerializer(redisSerializer);
+                redisTemplate.delete(token);
+            }
+        }
+        Cookie cookie=new Cookie("token","");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        request.getSession().removeAttribute("user");
+        return "redirect:/";
     }
 }
