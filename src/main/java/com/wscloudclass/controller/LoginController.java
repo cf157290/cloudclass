@@ -2,11 +2,16 @@ package com.wscloudclass.controller;
 
 import com.wscloudclass.dto.RegisterDTO;
 import com.wscloudclass.dto.UserDTO;
+import com.wscloudclass.exception.CustomizeErrorCode;
+import com.wscloudclass.exception.CustomizeException;
 import com.wscloudclass.mapper.UserMapper;
 import com.wscloudclass.model.User;
 import com.wscloudclass.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +42,10 @@ public class LoginController {
         user.setEmail(registerDTO.getEmail());
         user.setUserNumber(registerDTO.getNumber());
         user.setCreateTime(registerDTO.getCreateTime());
-        userMapper.insertSelective(user);
+        int i = userMapper.insertSelective(user);
+        if (i!=1){
+            throw new CustomizeException(CustomizeErrorCode.ERROR_REGISTER);
+        }
         return "success";
     }
 
@@ -51,16 +59,22 @@ public class LoginController {
         userExample.createCriteria().andEmailEqualTo(email).andPasswordEqualTo(password);
         List<User> list=userMapper.selectByExample(userExample);
         if (list.size()==1){
+            RedisSerializer redisSerializer=new StringRedisSerializer();
+            RedisSerializer redisSerializervalue=new Jackson2JsonRedisSerializer(UserDTO.class);
+            redisTemplate.setKeySerializer(redisSerializer);
+            redisTemplate.setValueSerializer(redisSerializervalue);
             String token= UUID.randomUUID().toString();
             Cookie cookie=new Cookie("token",token);
+            cookie.setMaxAge(24*60*60*10);
             httpServletResponse.addCookie(cookie);
             UserDTO userDTO=new UserDTO();
+            userDTO.setUid(list.get(0).getUid());
             userDTO.setEmail(list.get(0).getEmail());
             userDTO.setUserName(list.get(0).getUsername());
             userDTO.setUserNumber(list.get(0).getUserNumber());
             userDTO.setImgUrl(list.get(0).getImgUrl());
             userDTO.setBirthday(list.get(0).getBirthday());
-            userDTO.setCollegeDapartments(list.get(0).getCollegeDapartments());
+            userDTO.setCollegeDepartment(list.get(0).getCollegeDepartment());
             userDTO.setSchool(list.get(0).getSchool());
             httpServletRequest.getSession().setAttribute("user",userDTO);
             redisTemplate.opsForValue().set(token,userDTO);

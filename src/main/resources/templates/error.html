@@ -6,17 +6,13 @@
     <head th:insert="~{import :: head}"></head>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1>出错啦!</h1>
-            </div>
-            <div class="col-12">
-                <h3>错误码</h3>
-            </div>
-            <div class="col-12">
-                <p>错误信息</p>
-            </div>
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">出错啦!!!</h1>
+            <p class="lead" th:text="'错误码:'+${code}">错误码</p>
+            <hr class="my-4">
+            <p th:text="${message}">服务器忙碌，请稍后再试</p>
+            <a class="btn btn-primary btn-lg" href="/index" role="button">返回首页</a>
         </div>
     </div>
 </body>

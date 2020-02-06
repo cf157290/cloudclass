@@ -13,34 +13,34 @@
             <div class="col-md-3 col-1"></div>
             <div class="col-md-6 col-10">
 
-                    <form action="">
+                    <form action="/createCourse" enctype="multipart/form-data" method="post">
                         <div class="form-group">
-                            <label for="">学校：</label>
-                            <input type="text" class="form-control" required>
+                            <label>学校：</label>
+                            <input type="text" class="form-control" name="school" maxlength="20" required>
                         </div>
                         <div class="form-group">
-                            <label for="">院系：</label>
-                            <input type="text" class="form-control" required>
+                            <label >院系：</label>
+                            <input type="text" class="form-control" name="collegeDepartment" maxlength="20" required>
                         </div>
                         <div class="form-group">
-                            <label for="">班级：</label>
-                            <input type="text" class="form-control" required>
+                            <label >班级：</label>
+                            <input type="text" class="form-control" name="className" maxlength="20" required>
                         </div>
                         <div class="form-group">
-                            <label for="">课程：</label>
-                            <input type="text" class="form-control" required>
+                            <label >课程：</label>
+                            <input type="text" class="form-control" name="courseName" maxlength="20" required>
                         </div>
                         <div class="form-group">
-                            <label for="">课程封面：</label>
+                            <label >课程封面：</label>
 <!--                            <input type="file" name="txt_file" id="txt_file" class="file-loading  form-control" />-->
-                            <input id="input-b6" name="input-b6[]" type="file" class="form-control file-loading">
+                            <input id="input" name="file" type="file" class="form-control file-loading">
                         </div>
                         <div class="form-group">
-                            <label for="">学期：</label>
+                            <label >学期：</label>
                             <div>开始时间</div>
-                            <input type="date" class="form-control starttime" required>
+                            <input type="date" class="form-control start_time" name="startTime" required>
                             <div>结束时间</div>
-                            <input type="date" class="form-control endtime" required>
+                            <input type="date" class="form-control end_time" name="endTime" required>
                         </div>
                         <button class="btn btn-primary create">创建</button>
                     </form>
@@ -55,8 +55,8 @@
 <script>
     $('.create').click(
         function f() {
-            var starttime=$('.starttime').val();
-            var endtime=$('.endtime').val();
+            var starttime=$('.start_time').val();
+            var endtime=$('.end_time').val();
             if (endtime<starttime){
                 alert("开始时间不能小于结束时间"+starttime);
                 return false;
@@ -117,7 +117,7 @@
         return oFile;
     };*/
     $(document).ready(function() {
-        $("#input-b6").fileinput({
+        $("#input").fileinput({
             showUpload: false,
             dropZoneEnabled: false,
             maxFileCount: 1,
