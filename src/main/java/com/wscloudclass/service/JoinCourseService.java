@@ -6,10 +6,7 @@ import com.wscloudclass.exception.CustomizeException;
 import com.wscloudclass.mapper.CourseMapper;
 import com.wscloudclass.mapper.JoinCourseMapper;
 import com.wscloudclass.mapper.UserMapper;
-import com.wscloudclass.model.Course;
-import com.wscloudclass.model.CourseExample;
-import com.wscloudclass.model.JoinCourseKey;
-import com.wscloudclass.model.User;
+import com.wscloudclass.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +40,12 @@ public class JoinCourseService {
         JoinCourseKey joinCourseKey=new JoinCourseKey();
         joinCourseKey.setCid(cid);
         joinCourseKey.setUid(uid);
+        JoinCourseExample example = new JoinCourseExample();
+        example.createCriteria().andCidEqualTo(cid).andUidEqualTo(uid);
+        List<JoinCourseKey> joinCourseKeys = joinCourseMapper.selectByExample(example);
+        if (joinCourseKeys.size()!=0){
+            return false;
+        }
         int insert = joinCourseMapper.insert(joinCourseKey);
         if (insert==1){
             return true;
