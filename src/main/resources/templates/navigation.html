@@ -20,7 +20,7 @@
 					<div class="col-lg-4 col-md-5 col-12">
 						<a href="#" class="navbar-brand">我的题库</a>
 						<img alt="" width="40" height="40" class="img-thumbnail d-inline-block" th:src="${session.user.getImgUrl()}">
-						<a href="#" class="navbar-brand align-content-center" th:text="${session.user.getUserName()}">姓名</a>
+						<a th:href="@{/userInfo}" class="navbar-brand align-content-center" th:text="${session.user.getUserName()}">姓名</a>
 						<a th:href="@{/logOut}" class="navbar-brand">退出</a>
 					</div>
 

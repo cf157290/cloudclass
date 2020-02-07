@@ -34,27 +34,55 @@
                     <hr>
                     <div class="row">
                         <div class="col-12 col-md-4 userimg d-flex justify-content-center" style="border-right:1px solid #777777">
-                            <img src="img/people.png" alt="" class="img-thumbnail mt-5 ml-5 " style="height: 150px;width: 150px">
+                            <img th:src="${userInfo.imgUrl}" alt="" class="img-thumbnail mt-5 ml-5 " style="height: 150px;width: 150px">
                         </div>
                         <div class="col-md-8 col-12 mt-5">
                             <div class="row">
                                 <div class="col-4 text-right">
                                     <p>账号:</p>
+                                </div>
+                                <div class="col-4">
+                                    <p th:text="${userInfo.email}">账号</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 text-right">
                                     <p>姓名:</p>
-                                    <p>性别:</p>
+                                </div>
+                                <div class="col-4">
+                                    <p th:text="${userInfo.userName}">姓名</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 text-right">
                                     <p>出生年份:</p>
+                                </div>
+                                <div class="col-4">
+                                <p th:text="${userInfo.birthday}">出生年份</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 text-right">
                                     <p>工号/学号:</p>
-                                    <p>所在的学校:</p>
+                                </div>
+                                <div class="col-4">
+                                <p th:text="${userInfo.userNumber}">工号/学号</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 text-right">
                                     <p>所在的院系:</p>
                                 </div>
                                 <div class="col-4">
-                                    <p>账号</p>
-                                    <p>姓名</p>
-                                    <p>性别</p>
-                                    <p>出生年份</p>
-                                    <p>工号/学号</p>
-                                    <p>所在的学校</p>
-                                    <p>所在的院系</p>
+                                    <p th:text="${userInfo.school}">所在的院系</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 text-right">
+                                    <p>所在的学校:</p>
+                                </div>
+                                <div class="col-4">
+                                    <p th:text="${userInfo.collegeDepartment}">所在的学校</p>
                                 </div>
                             </div>
                         </div>
