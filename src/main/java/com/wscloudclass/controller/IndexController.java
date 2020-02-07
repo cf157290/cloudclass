@@ -22,6 +22,7 @@ public class IndexController {
         UserDTO user = (UserDTO) session.getAttribute("user");
         List<CourseDTO> list=indexService.selectCourseById(user.getUid());
         if (list.size()!=0){
+            model.addAttribute("uid",user.getUid());
             model.addAttribute("courses",list);
         }
         return "/index";

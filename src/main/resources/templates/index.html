@@ -95,7 +95,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="text-center" th:if="${courses}== null">
+                            <div class="text-center" id="create_icon">
                                 <div class="d-flex justify-content-center">
                                     <img src="/img/nofind.png" style="width: 350px;height: 350px">
                                 </div>
@@ -118,7 +118,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="text-center" th:if="${courses}== null">
+                            <div class="text-center" id="join_icon">
                                 <div class="d-flex justify-content-center">
                                     <img src="/img/nofind.png" style="width: 350px;height: 350px">
                                 </div>
@@ -131,9 +131,9 @@
         </div>
     </div>
 </body>
-<script>
-
+<script th:inline="javascript">
     $(document).ready(function(){
+        f();
         $("#select").on("keyup", function() {
             var select=$('#sel1').val().trim();
             if (select == "我加入的") {
@@ -153,5 +153,30 @@
             });
         });
     });
+    function f() {
+        var list=[[${courses}]];
+        var uid=[[${uid}]]
+        var createlist=0;
+        var joinlist=0;
+        $.each(list,function (k,v) {
+            if (v.teacherid==uid) {
+                createlist++;
+            }else {
+                joinlist++;
+            }
+        });
+        if (joinlist==0){
+            $('#join_icon').show()
+        } else {
+            $('#join_icon').hide();
+
+        }
+        if (createlist==0){
+            $('#create_icon').show()
+        } else {
+            $('#create_icon').hide();
+
+        }
+    }
 </script>
 </html>
