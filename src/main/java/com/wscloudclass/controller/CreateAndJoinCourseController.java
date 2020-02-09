@@ -37,7 +37,7 @@ public class CreateAndJoinCourseController {
         boolean flag=createCourseService.createCourse(createCourseDTO,request);
         if (flag){
             //创建成功
-            return "/activity";
+            return "redirect:index";
         }else {
             //创建失败
             throw  new CustomizeException(CustomizeErrorCode.ERROR_CREATE_COURSE);

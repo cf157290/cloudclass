@@ -13,7 +13,7 @@
             <div class="row" style="height: 150px">
                 <!--            卡片组-->
                 <div class="card">
-                    <img src="/img/mainclass.jpg"alt="" class="card-img-top" style="height: 150px">
+                    <img src="/img/mainclass.jpg" class="card-img-top" style="height: 150px">
                     <div class="card-img-overlay">
                         <div class="row">
                             <div class="col-md-3 col-4 d-flex justify-content-end">
@@ -25,6 +25,9 @@
                                 </div>
                                 <div class="row" style="height: 35px">
                                     <small>班课名称</small>
+                                    <small class="ml-3" th:if="${session.user.getUid()} == ${teacherid}">邀请码</small>
+                                    <span hidden th:text="${cid}" id="cid"></span>
+                                    <span hidden th:text="${teacherid}" id="teacherid"></span>
                                 </div>
                                 <div class="row" style="height: 35px">
                                     <button class="btn btn-primary" style="width: 100px;height: 35px" th:if="${session.user.getUid()} != ${teacherid}">签到</button>
@@ -35,7 +38,7 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="#">发起签到</a>
                                             <a class="dropdown-item" href="#">发布通知</a>
-                                            <a class="dropdown-item" href="#">发起活动</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#create_activity">发起活动</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#up">上传资源</a>
                                             <a class="dropdown-item" href="#">导出学生平时成绩</a>
                                         </div>
@@ -69,7 +72,7 @@
                 </div>
             </div>
         </div>
-
+        <!--上传资源模态框-->
         <div class="modal fade" tabindex="-1" id="up" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -84,6 +87,27 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal">取消</button>
                         <button class="btn btn-primary">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--选择活动类型模态框-->
+        <div class="modal fade" tabindex="-1" id="create_activity" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">提示</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>请选择要发起的活动类型</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary">描述题</button>
+                        <a th:href="@{'/initse/'+${cid}+'/'+${teacherid}}">
+                            <button class="btn btn-primary">选择题</button>
+                        </a>
                     </div>
                 </div>
             </div>

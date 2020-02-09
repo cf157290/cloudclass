@@ -12,60 +12,64 @@
         <div class="container bg-white">
             <div class="row">
                 <div class="col-12">
+                    <span id="message" class="text-danger"></span>
                     <div class="input-group mt-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">活动名称</span>
                         </div>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="activity_name">
                     </div>
+                    <span class="text-danger" id="activity_name_message"></span>
                     <ul class="list-group mt-3" id="list">
                         <li class="list-group-item">
                             <p>1</p>
                             <span> 请输入题干</span>
-                            <textarea name="" id="" class="form-control" cols="30" rows="3"></textarea>
+                            <textarea name="" id="" class="form-control stem" cols="30" rows="3"></textarea>
                             <span>图片</span>
                             <input type="file" class="file-loading fl">
                             <div class="input-group mt-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">A</span>
                                 </div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control itemA">
                                 <div class="input-group-append">
                                     <span class="input-group-text">设为正确答案</span>
                                 </div>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="checkA">
                                     </div>
                                 </div>
                             </div>
+                            <span class="text-danger itemA_message"></span>
 
                             <div class="input-group mt-2">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">B</span>
                                 </div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control itemB">
                                 <div class="input-group-append">
                                     <span class="input-group-text">设为正确答案</span>
                                 </div>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="checkB">
                                     </div>
                                 </div>
                             </div>
+                            <span class="text-danger itemB_message"></span>
 
                             <div class="input-group mt-2">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">C</span>
                                 </div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control itemC">
                                 <div class="input-group-append">
                                     <span class="input-group-text">设为正确答案</span>
                                 </div>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="checkC">
                                     </div>
                                 </div>
                             </div>
@@ -74,13 +78,13 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">D</span>
                                 </div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control itemD">
                                 <div class="input-group-append">
                                     <span class="input-group-text">设为正确答案</span>
                                 </div>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="checkD">
                                     </div>
                                 </div>
                             </div>
@@ -88,10 +92,10 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">分值</span>
                                 </div>
-                                <input type="number" class="form-control">
+                                <input type="number" class="form-control score" placeholder="默认为1">
                             </div>
                             <p>解析</p>
-                            <textarea name="" cols="30" rows="3" class="form-control"></textarea>
+                            <textarea cols="30" rows="3" class="form-control analysis"></textarea>
                         </li>
                     </ul>
                 </div>
@@ -102,11 +106,12 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">活动持续</span>
                         </div>
-                        <input type="number" class="form-control">
+                        <input type="number" class="form-control" id="duration">
                         <div class="input-group-append">
                             <span class="input-group-text">天</span>
                         </div>
                     </div>
+                    <span class="text-danger" id="duration_message"></span>
                 </div>
             </div>
             <div class="row">
@@ -129,15 +134,16 @@
                 <div class="modal-body">
                     确定要发布活动吗?
                 </div>
+                <span class="text-success ml-3" id="submit_message"></span>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" id="cancel">取消</button>
+                    <button class="btn btn-primary" id="create_activity" onclick="subquestion()">确定</button>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script>
+<script th:inline="javascript">
     /* 单机li进行页面跳转 */
     $(".navclass").click(function(){
         /!*当前标签下的a标签*!/
@@ -164,50 +170,52 @@
             '                        <li class="list-group-item">\n' +
             '                            <p>'+tihao+'</p>\n' +
             '                            <span> 请输入题干</span>\n' +
-            '                            <textarea name="" id="" class="form-control" cols="30" rows="3"></textarea>\n' +
+            '                            <textarea name="" id="" class="form-control stem" cols="30" rows="3"></textarea>\n' +
             '                            <span>图片</span>\n' +
             '                            <input type="file" class="file-loading fl">\n' +
             '                            <div class="input-group mt-3">\n' +
             '                                <div class="input-group-prepend">\n' +
             '                                    <span class="input-group-text">A</span>\n' +
             '                                </div>\n' +
-            '                                <input type="text" class="form-control">\n' +
+            '                                <input type="text" class="form-control itemA">\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <span class="input-group-text">设为正确答案</span>\n' +
             '                                </div>\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <div class="input-group-text">\n' +
-            '                                        <input type="checkbox">\n' +
+            '                                        <input type="checkbox" class="checkA">\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
+            '                                <span class="text-danger itemA_message"></span>\n' +
             '\n' +
             '                            <div class="input-group mt-2">\n' +
             '                                <div class="input-group-prepend">\n' +
             '                                    <span class="input-group-text">B</span>\n' +
             '                                </div>\n' +
-            '                                <input type="text" class="form-control">\n' +
+            '                                <input type="text" class="form-control itemB">\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <span class="input-group-text">设为正确答案</span>\n' +
             '                                </div>\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <div class="input-group-text">\n' +
-            '                                        <input type="checkbox">\n' +
+            '                                        <input type="checkbox" class="checkB">\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
+            '                                <span class="text-danger itemB_message"></span>\n' +
             '\n' +
             '                            <div class="input-group mt-2">\n' +
             '                                <div class="input-group-prepend">\n' +
             '                                    <span class="input-group-text">C</span>\n' +
             '                                </div>\n' +
-            '                                <input type="text" class="form-control">\n' +
+            '                                <input type="text" class="form-control itemC">\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <span class="input-group-text">设为正确答案</span>\n' +
             '                                </div>\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <div class="input-group-text">\n' +
-            '                                        <input type="checkbox">\n' +
+            '                                        <input type="checkbox" class="checkC">\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
@@ -216,18 +224,24 @@
             '                                <div class="input-group-prepend">\n' +
             '                                    <span class="input-group-text">D</span>\n' +
             '                                </div>\n' +
-            '                                <input type="text" class="form-control">\n' +
+            '                                <input type="text" class="form-control itemD">\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <span class="input-group-text">设为正确答案</span>\n' +
             '                                </div>\n' +
             '                                <div class="input-group-append">\n' +
             '                                    <div class="input-group-text">\n' +
-            '                                        <input type="checkbox">\n' +
+            '                                        <input type="checkbox" class="checkD">\n' +
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </div>\n' +
+            '                            <div class="input-group mt-2">\n' +
+            '                                <div class="input-group-prepend">\n' +
+            '                                <span class="input-group-text">分值</span>\n' +
+            '                                </div>\n' +
+            '                                <input type="number" class="form-control score" placeholder="默认为1">\n' +
+            '                                </div>\n' +
             '                            <p>解析</p>\n' +
-            '                            <textarea name="" cols="30" rows="3" class="form-control"></textarea>\n' +
+            '                            <textarea name="" cols="30" rows="3" class="form-control analysis"></textarea>\n' +
             '                        </li>'
         );
         tihao++
@@ -253,5 +267,124 @@
         }
 
     });
+    function subquestion() {
+        if ($('#activity_name').val()==""){
+            $('#activity_name_message').html("请输入活动名称");
+            $('#cancel').trigger('click');
+            $('#submit_message').html("")
+            return;
+        }else {
+            $('#activity_name_message').html("");
+        }
+        $('#list li').each(function () {
+            var itemA=$(this).find('.itemA').val();
+            var itemB=$(this).find('.itemB').val();
+            if (itemA==""){
+                $('.itemA_message').html("此项不能为空");
+                $('#cancel').trigger('click');
+                $('#submit_message').html("")
+            } else {
+                $('.itemA_message').html("");
+            }
+            if (itemB==""){
+                $('.itemB_message').html("此项不能为空");
+                $('#cancel').trigger('click');
+                $('#submit_message').html("")
+            } else {
+                $('.itemB_message').html("");
+            }
+        });
+        if ($('#duration').val()==""){
+            $('#duration_message').html("请输入活动持续时间");
+            $('#cancel').trigger('click');
+            $('#submit_message').html("")
+            return;
+        } else {
+            $('#duration_message').html("");
+        }
+        if ($('#duration').val()<=0){
+            $('#duration_message').html("活动时间必须为正整数");
+            $('#cancel').trigger('click');
+            $('#submit_message').html("")
+            return;
+        } else {
+            $('#duration_message').html("");
+        }
+        var selection=new Array();
+        var formData=new FormData();
+        $('#list li').each(function () {
+            var selContent=$(this).find('.stem').val();
+            //var img=$(this).find('.fl').val();
+            var img=$(this).find('.fl').get(0).files[0];
+            var a=$(this).find('.itemA').val();
+            var b=$(this).find('.itemB').val();
+            var c=$(this).find('.itemC').val();
+            var d=$(this).find('.itemD').val();
+            var checkA=$(this).find('.checkA').is(':checked');
+            var checkB=$(this).find('.checkB').is(':checked');
+            var checkC=$(this).find('.checkC').is(':checked');
+            var checkD=$(this).find('.checkD').is(':checked');
+            var score=$(this).find('.score').val();
+            var analysis=$(this).find('.analysis').val();
+            var map={};
+            formData.append("imgs",img);
+            map['selContent']=selContent;
+            map['a']=a;
+            map['b']=b;
+            map['c']=c;
+            map['d']=d;
+            map['checkA']=checkA;
+            map['checkB']=checkB;
+            map['checkC']=checkC;
+            map['checkD']=checkD;
+            map['score']=score;
+            map['analysis']=analysis;
+            if (img==null) {
+                map['haveImg']=false;
+            }else{
+                map['haveImg']=true;
+            }
+            selection.push(map);
+        });
+        var activityName=$('#activity_name').val();
+        var duration=$('#duration').val();
+        var selectionInfo=JSON.stringify(selection);
+        //formData.append("imgs",imgs);
+        formData.append('selection',new Blob([selectionInfo],{type: "application/json"}));
+        formData.append("activityName",activityName);
+        formData.append("duration",duration);
+        $('#submit_message').html("数据提交中,请稍后...");
+        $.ajax({
+            //请求方式
+            type : "POST",
+            //请求的媒体类型
+            //contentType: "application/json;charset=UTF-8",
+            contentType: false,
+            //contentType: "multipart/form-data;;charset=UTF-8",
+            processData: false,
+            dataType:"json",
+            //请求地址
+            url : "/createSelActivity/"+[[${cid}]]+"/"+[[${teacherid}]],
+            //数据，json字符串
+            data : formData,
+            //请求成功
+            success : function(result) {
+                    //var data=$.parseJSON(result);
+                    if (result.message){
+                        window.location.href="/activity/"+[[${cid}]]+"/"+[[${teacherid}]];
+                    }else {
+                        $('#cancel').trigger('click');
+                        $('#message').html("未知异常,创建活动失败,请稍后重试!");
+                        $('#submit_message').html("");
+                    }
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                $('#cancel').trigger('click');
+                $('#message').html("发送请求失败,请检查您的网络状态!");
+                $('#submit_message').html("");
+            }
+        });
+    }
 </script>
 </html>

@@ -11,7 +11,8 @@ public class ActivityController {
     public String activity(@PathVariable(name = "cid")Long cid,
                            @PathVariable(name = "teacherid")Long teacherid,
                            Model model){
-        model.addAttribute("teacherid",teacherid);
+        //model.addAttribute("cid",cid);
+        //model.addAttribute("teacherid",teacherid);
         return "activity";
     }
 }
