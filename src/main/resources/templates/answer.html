@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>网上班课-班级活动</title>
     <head th:insert="~{import :: head}"></head>
-    <link href="https://cdn.bootcss.com/awesome-bootstrap-checkbox/v0.2.3/awesome-bootstrap-checkbox.css" rel="stylesheet">
 </head>
 <body>
     <div th:insert="~{navigation::nav}"></div>
@@ -13,79 +12,80 @@
         <div class="container bg-white">
             <div class="row">
                 <div class="col-12">
-                    <h4 class="mt-3">活动名称</h4>
+                    <h4 class="mt-3" th:text="${activityName}">活动名称</h4>
                     <hr>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <ul class="list-group">
-                        <li class="list-group-item">
-
-                            <h5>题号</h5>
-                            <p>题干</p>
-                            <img src="img/logo.png" style="max-height: 200px;max-width: 200px" alt="">
+                        <li class="list-group-item" th:each="selection:${selections}">
 <!--                            单选-->
-                            <form role="form">
-                                <div class="radio radio-info">
-<!--                                    name="name"单选-->
-                                    <input type="radio" name="radio" id="radio" value="option1">
-                                    <label for="radio">
-                                        A:选项A
-                                    </label>
+                            <div th:if="${selection.oneOrMore}==1">
+                                <h5>
+                                    <span th:text="${selection.selNum}">题号</span>
+                                    <span class="ml-2">单选</span>
+                                </h5>
+                                <p th:text="${selection.selContent}">题干</p>
+                                <div>
+                                    <img th:src="@{${selection.imgUrl}}" style="max-height: 250px;max-width: 250px" alt="">
                                 </div>
-                                <div class="radio radio-info">
-                                    <input type="radio" name="radio" id="radio2" value="option2">
-                                    <label for="radio2">
-                                        B:选项B
-                                    </label>
+                               <div class="btn-group-toggle btn-group-vertical mt-2" data-toggle="buttons">
+                                   <label class="btn btn-outline-primary" th:if="${selection.a}!=''">
+                                       <input type="radio" name="radio" value="A">
+                                       <span th:text="${selection.a}">A:选项A</span>
+                                   </label>
+                                   <label class="btn btn-outline-primary" th:if="${selection.b}!=''">
+                                       <input type="radio" name="radio" value="B">
+                                       <span th:text="${selection.b}">B:选项B</span>
+                                   </label>
+
+                                   <label class="btn btn-outline-primary" th:if="${selection.c}!=''">
+                                       <input type="radio" name="radio" value="C">
+                                       <span th:text="${selection.c}">C:选项C</span>
+                                   </label>
+                                   <label class="btn btn-outline-primary" th:if="${selection.d}!=''">
+                                       <input type="radio" name="radio" value="D">
+                                       <span th:text="${selection.d}">D:选项D</span>
+                                   </label>
+                               </div>
+                                <div>
+                                    <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
                                 </div>
-                                <div class="radio radio-info">
-                                    <input type="radio" name="radio" id="radio3" value="option2">
-                                    <label for="radio3">
-                                        C:选项C
-                                    </label>
+                            </div>
+<!--                            多选-->
+                            <div th:if="${selection.oneOrMore}==2">
+                                <h5>
+                                    <span th:text="${selection.selNum}">题号</span>
+                                    <span class="ml-2">多选</span>
+                                </h5>
+                                <p th:text="${selection.selContent}">题干</p>
+                                <div>
+                                    <img th:src="@{${selection.imgUrl}}" style="max-height: 250px;max-width: 250px" alt="">
                                 </div>
-                                <div class="radio radio-info">
-                                    <input type="radio" name="radio" id="radio4" value="option2">
-                                    <label for="radio4">
-                                        D:选项D
+                                <div class="btn-group-toggle btn-group-vertical mt-2" data-toggle="buttons">
+                                    <label class="btn btn-outline-primary" th:if="${selection.a}!=''">
+                                        <input type="checkbox" value="A">
+                                        <span th:text="${selection.a}">A:选项A</span>
                                     </label>
-                                </div>
-                            </form>
-                            <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
-                        </li>
-                        <li class="list-group-item">
-                            <h5>题号</h5>
-                            <p>题干</p>
-                            <img src="img/logo.png" style="max-height: 200px;max-width: 200px" alt="">
-                            <form role="form">
-                                <div class="checkbox checkbox-info">
-                                    <input type="checkbox" id="check"  value="option1">
-                                    <label for="check">
-                                        A:选项A
+                                    <label class="btn btn-outline-primary" th:if="${selection.b}!=''">
+                                        <input type="checkbox" value="B">
+                                        <span th:text="${selection.b}">B:选项B</span>
                                     </label>
-                                </div>
-                                <div class="checkbox checkbox-info">
-                                    <input type="checkbox" id="check2" value="option2">
-                                    <label for="check2">
-                                        B:选项B
+
+                                    <label class="btn btn-outline-primary" th:if="${selection.c}!=''">
+                                        <input type="checkbox" value="C">
+                                        <span th:text="${selection.c}">C:选项C</span>
                                     </label>
-                                </div>
-                                <div class="checkbox checkbox-info">
-                                    <input type="checkbox" id="check3" value="option2">
-                                    <label for="check3">
-                                        C:选项C
+                                    <label class="btn btn-outline-primary" th:if="${selection.d}!=''">
+                                        <input type="checkbox" value="D">
+                                        <span th:text="${selection.d}">D:选项D</span>
                                     </label>
+                                    <div>
+                                        <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
+                                    </div>
                                 </div>
-                                <div class="checkbox checkbox-info">
-                                    <input type="checkbox" id="check4" value="option2">
-                                    <label for="check4">
-                                        D:选项D
-                                    </label>
-                                </div>
-                            </form>
-                            <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

@@ -1,13 +1,14 @@
 package com.wscloudclass.dto;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 发布选择题活动相关属性，收集页面元素
+ */
 @Data
 public class SelectionDTO {
     private Long selId;
     private String selContent;
-   // private MultipartFile img;
     private String a;
     private String b;
     private String c;

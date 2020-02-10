@@ -268,6 +268,7 @@
 
     });
     function subquestion() {
+        $('#create_activity').attr("disabled",true);
         if ($('#activity_name').val()==""){
             $('#activity_name_message').html("请输入活动名称");
             $('#cancel').trigger('click');
@@ -376,6 +377,7 @@
                         $('#cancel').trigger('click');
                         $('#message').html("未知异常,创建活动失败,请稍后重试!");
                         $('#submit_message').html("");
+                        $('#create_activity').attr("disabled",false);
                     }
             },
             //请求失败，包含具体的错误信息
@@ -383,6 +385,7 @@
                 $('#cancel').trigger('click');
                 $('#message').html("发送请求失败,请检查您的网络状态!");
                 $('#submit_message').html("");
+                $('#create_activity').attr("disabled",false);
             }
         });
     }

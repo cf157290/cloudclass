@@ -26,39 +26,43 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="list-group " >
-                        <li class="mt-1 list-group-item" >
+                        <li class="mt-1 list-group-item" th:each="activity:${activitys}">
                             <div class="media">
                                 <div class="media-left media-middle">
                                     <img src="/img/logo.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
                                 </div>
                                 <div class="media-body">
-                                    <h5 class="mt-0"> <span class="badge badge-success">进行中</span> 活动名称</h5>
-                                    开始时间+结束时间
+                                    <div >
+                                        <h5 class="d-inline-block">
+                                            <span class="badge badge-success" th:if="${activity.actType}==1">进行中</span>
+                                            <span class="badge badge-secondary" th:if="${activity.actType}==0">已结束</span>
+                                        </h5>
+                                        <h5 class="mt-0 d-inline-block" th:text="${activity.activityName}">
+                                            活动名称
+                                        </h5>
+                                    </div>
+                                    <small th:text="'开始时间:'+${#dates.format(activity.startTime,'yyyy-MM-dd')}+'|'"></small>
+                                    <small th:text="'结束时间:'+${#dates.format(activity.endTime,'yyyy-MM-dd')}+'|'"></small>
+                                    <small th:text="'共'+${activity.sumPati}+'人作答|'"></small>
+                                    <small th:text="'共'+${activity.totalItem}+'道题目'"></small>
                                 </div>
-                                <a href="www.baidu.com"></a>
                             </div>
-                        </li>
-                        <li class="media mt-1 list-group-item">
-                            <div class="media">
-                                <div class="media-left media-middle">
-                                    <img src="/img/logo.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
-                                </div>
-                                <div class="media-body">
-                                    <h5 class="mt-0"> <span class="badge badge-secondary">已结束</span> 活动名称</h5>
-                                    开始时间+结束时间
-                                </div>
-                                <a href="www.baidu.com"></a>
-                            </div>
+                            <a th:href="@{'/checkActivity/'+${cid}+'/'+${teacherid}+'/'+${activity.actId}+'/'+${activity.status}+'/'+${activity.actType}}"></a>
                         </li>
                     </ul>
-
+                    <div class="text-center"  th:if="${showImg}">
+                        <div class="d-flex justify-content-center">
+                            <img src="/img/noactivitys.png" alt="" style="width: 350px;height: 350px">
+                        </div>
+                        <h5>该班课还没有任何活动</h5>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
 </body>
-<script>
+<script th:inline="javascript">
     $(function(){
         /* 单机li进行页面跳转 */
         $("ul li").click(function(){
@@ -68,5 +72,6 @@
             window.location.href=$(obj[0]).attr("href");
         });
     })
+    
 </script>
 </html>
