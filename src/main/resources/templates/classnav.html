@@ -104,7 +104,9 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button class="btn btn-primary">描述题</button>
+                        <a th:href="@{'/initdes/'+${cid}+'/'+${teacherid}}">
+                            <button class="btn btn-primary">描述题</button>
+                        </a>
                         <a th:href="@{'/initse/'+${cid}+'/'+${teacherid}}">
                             <button class="btn btn-primary">选择题</button>
                         </a>

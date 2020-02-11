@@ -25,7 +25,7 @@ public class AliyunOSSUtils {
     String bucketName;
     @Value("${aliyun.urlPrefix}")
     String urlPrefix;
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadImgFile(MultipartFile file) throws IOException {
         String fileName=file.getOriginalFilename();
         String objectName= UUID.randomUUID().toString()+"-"+fileName;
         ObjectMetadata objectMetadata=new ObjectMetadata();
@@ -40,4 +40,18 @@ public class AliyunOSSUtils {
         ossClient.shutdown();
         return urlPrefix+objectName;
     }
+    public String uploadFile(MultipartFile file) throws IOException {
+        String fileName=file.getOriginalFilename();
+        String objectName= UUID.randomUUID().toString()+"-"+fileName;
+       // objectMetadata.setContentDisposition(fileName);
+        // 创建OSSClient实例。
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        InputStream inputStream=file.getInputStream();
+        ossClient.putObject(bucketName, objectName, inputStream);
+        ossClient.setObjectAcl(bucketName,objectName, CannedAccessControlList.PublicRead);
+        // 关闭OSSClient。
+        ossClient.shutdown();
+        return urlPrefix+objectName;
+    }
+
 }

@@ -8,7 +8,6 @@ import com.wscloudclass.exception.CustomizeException;
 import com.wscloudclass.service.InitSeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,12 @@ public class InitSeController {
     InitSeService initSeService;
     @GetMapping("/initse/{cid}/{teacherid}")
     public String initSe(@PathVariable(name = "cid") Long cid,
-                         @PathVariable(name = "teacherid") Long teacherid){
+                         @PathVariable(name = "teacherid") Long teacherid,
+                         HttpServletRequest request){
+        UserDTO user = (UserDTO) request.getSession().getAttribute("user");
+        if (!teacherid.equals(user.getUid())){
+            throw new CustomizeException(CustomizeErrorCode.ERROR_SUBMIT_SELECTION);
+        }
         return "initse";
     }
     @ResponseBody

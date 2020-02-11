@@ -3,6 +3,10 @@ package com.wscloudclass.dto;
 import lombok.Data;
 
 import java.util.Date;
+
+/**
+ * 用于活动展示列表
+ */
 @Data
 public class ActivityDTO {
     private Long actId;

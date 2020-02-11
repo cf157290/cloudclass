@@ -30,13 +30,19 @@ public class ActivityService {
             ActivityDTO activityDTO=new ActivityDTO();
             BeanUtils.copyProperties(activity,activityDTO);
             PartiActivityExample partiActivityExample = new PartiActivityExample();
-            example.createCriteria().andActIdEqualTo(activity.getActId());
+            partiActivityExample.createCriteria().andActIdEqualTo(activity.getActId());
             long count = partiActivityMapper.countByExample(partiActivityExample);//查询参与人数
-            SelectActivityExample selectActivityExample = new SelectActivityExample();
-            selectActivityExample.createCriteria().andActIdEqualTo(activity.getActId());
-            long count1 = selectActivityMapper.countByExample(selectActivityExample);//查询题目总数
+            if (activity.getActType()==1){
+                //选择题活动
+                SelectActivityExample selectActivityExample = new SelectActivityExample();
+                selectActivityExample.createCriteria().andActIdEqualTo(activity.getActId());
+                long selectcount = selectActivityMapper.countByExample(selectActivityExample);//查询题目总数
+                activityDTO.setTotalItem(selectcount);
+            }else {
+                //描述题活动
+                activityDTO.setTotalItem((long) 1);
+            }
             activityDTO.setSumPati(count);
-            activityDTO.setTotalItem(count1);
             Date date=new Date();
             if (date.before(activity.getEndTime())){
                 activityDTO.setStatus(1);//活动进行中

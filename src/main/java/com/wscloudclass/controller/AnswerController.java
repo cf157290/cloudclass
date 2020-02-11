@@ -39,7 +39,7 @@ public class AnswerController {
         UserDTO user = (UserDTO) session.getAttribute("user");
         if (teacherid.equals(user.getUid())){
             //如果是教师强制跳转
-            return "ranking";
+            return "redirect:/ranking/"+cid+"/"+teacherid;
         }else {
             boolean flag=activityService.isParti(actId,user.getUid());//判断是否参与过活动
             if (flag){

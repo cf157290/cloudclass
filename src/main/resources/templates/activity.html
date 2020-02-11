@@ -17,15 +17,14 @@
         <div class="container bg-white">
             <div class="row" style="height: 150px">
                 <div class="col-7 pr-0 offset-2">
-                    <input type="text" class="form-control mt-5 mr-0" placeholder="根据活动名称搜索">
+                    <input type="text" class="form-control mt-5 mr-0" placeholder="输入活动关键字进行搜索" id="text">
                 </div>
                 <div class="col-3 pl-0 mt-5">
-                    <button class="btn btn-secondary">搜索</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <ul class="list-group " >
+                    <ul class="list-group" id="newList" >
                         <li class="mt-1 list-group-item" th:each="activity:${activitys}">
                             <div class="media">
                                 <div class="media-left media-middle">
@@ -34,8 +33,8 @@
                                 <div class="media-body">
                                     <div >
                                         <h5 class="d-inline-block">
-                                            <span class="badge badge-success" th:if="${activity.actType}==1">进行中</span>
-                                            <span class="badge badge-secondary" th:if="${activity.actType}==0">已结束</span>
+                                            <span class="badge badge-success" th:if="${activity.status}==1">进行中</span>
+                                            <span class="badge badge-secondary" th:if="${activity.status}==0">已结束</span>
                                         </h5>
                                         <h5 class="mt-0 d-inline-block" th:text="${activity.activityName}">
                                             活动名称
@@ -70,6 +69,13 @@
             var obj = $(this).children("a");
             /*获取第一个a标签，进行跳转*/
             window.location.href=$(obj[0]).attr("href");
+        });
+
+        $("#text").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#newList li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
         });
     })
     

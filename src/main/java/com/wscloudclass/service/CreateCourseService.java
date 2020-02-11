@@ -41,7 +41,7 @@ public class CreateCourseService {
                 course.setCollegeDepartment(createCourseDTO.getCollegeDepartment());
                 course.setCourseName(createCourseDTO.getCourseName());
                 if (createCourseDTO.getFile()!=null){
-                    String imgUrl=aliyunOSSUtils.uploadFile(createCourseDTO.getFile());
+                    String imgUrl=aliyunOSSUtils.uploadImgFile(createCourseDTO.getFile());
                     course.setCourseUrl(imgUrl);
                 }
                 DateFormat df=new SimpleDateFormat("yyyy-MM-dd");

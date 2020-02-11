@@ -35,9 +35,9 @@ public class InitSeService {
         //判断活动id是否存在
         while (flag){
             activityId=Long.valueOf(getRandomString(15));
-            SelectionExample example = new SelectionExample();
-            example.createCriteria().andSelIdEqualTo(activityId);
-            long count = selectionMapper.countByExample(example);
+            ActivityExample example = new ActivityExample();
+            example.createCriteria().andActIdEqualTo(activityId);
+            long count = activityMapper.countByExample(example);
             if (count==0){
                 activity.setActId(activityId);
                 flag=false;
@@ -66,7 +66,7 @@ public class InitSeService {
                 if (imgs.size()>0) {
                     MultipartFile file = imgs.get(0);
                     imgs.remove(0);
-                    String imgUrl = aliyunOSSUtils.uploadFile(file);
+                    String imgUrl = aliyunOSSUtils.uploadImgFile(file);
                     selection = setSelection(selectionDTO);
                     selection.setImgUrl(imgUrl);
                 }
