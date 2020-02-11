@@ -42,7 +42,7 @@ public class ActivityController {
             //教师操作
             if (actType==1){
                 //选择题
-                return "ranking";
+                return "redirect:/ranking/"+cid+"/"+teacherid+"/"+actId;
             }else {
                 //描述题
                 return "score";
@@ -56,7 +56,7 @@ public class ActivityController {
                     boolean flag=activityService.isParti(actId,user.getUid());//判断是否参与过活动
                     if (flag){
                         //参与过活动
-                        return "ranking";
+                        return "redirect:/ranking/"+cid+"/"+teacherid+"/"+actId;
                     }else {
                         //未参与活动
                         return "redirect:/answer/"+cid+"/"+teacherid+"/"+actId;

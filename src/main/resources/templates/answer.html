@@ -13,40 +13,42 @@
             <div class="row">
                 <div class="col-12">
                     <h4 class="mt-3" th:text="${activityName}">活动名称</h4>
+                    <span id="message" class="text-danger"></span>
                     <hr>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <ul class="list-group">
+                    <ul class="list-group" id="list">
                         <li class="list-group-item" th:each="selection:${selections}">
 <!--                            单选-->
                             <div th:if="${selection.oneOrMore}==1">
                                 <h5>
                                     <span th:text="${selection.selNum}">题号</span>
                                     <span class="ml-2">单选</span>
+                                    <span th:text="${selection.selId}" class="sel_id" hidden="hidden"></span>
                                 </h5>
                                 <p th:text="${selection.selContent}">题干</p>
                                 <div>
-                                    <img th:src="@{${selection.imgUrl}}" style="max-height: 250px;max-width: 250px" alt="">
+                                    <img th:src="@{${selection.imgUrl}}" style="max-height: 250px;max-width: 350px" alt="">
                                 </div>
                                <div class="btn-group-toggle btn-group-vertical mt-2" data-toggle="buttons">
-                                   <label class="btn btn-outline-primary" th:if="${selection.a}!=''">
-                                       <input type="radio" name="radio" value="A">
-                                       <span th:text="${selection.a}">A:选项A</span>
+                                   <label class="btn btn-outline-primary text-left" th:if="${selection.a}!=''">
+                                       <input type="radio" value="A">
+                                       <span>A:</span><span th:text="${selection.a}">A:选项A</span>
                                    </label>
-                                   <label class="btn btn-outline-primary" th:if="${selection.b}!=''">
-                                       <input type="radio" name="radio" value="B">
-                                       <span th:text="${selection.b}">B:选项B</span>
+                                   <label class="btn btn-outline-primary text-left" th:if="${selection.b}!=''">
+                                       <input type="radio" value="B">
+                                       <span>B:</span><span th:text="${selection.b}">B:选项B</span>
                                    </label>
 
-                                   <label class="btn btn-outline-primary" th:if="${selection.c}!=''">
-                                       <input type="radio" name="radio" value="C">
-                                       <span th:text="${selection.c}">C:选项C</span>
+                                   <label class="btn btn-outline-primary text-left" th:if="${selection.c}!=''">
+                                       <input type="radio" value="C">
+                                       <span>C:</span><span th:text="${selection.c}">C:选项C</span>
                                    </label>
-                                   <label class="btn btn-outline-primary" th:if="${selection.d}!=''">
-                                       <input type="radio" name="radio" value="D">
-                                       <span th:text="${selection.d}">D:选项D</span>
+                                   <label class="btn btn-outline-primary text-left" th:if="${selection.d}!=''">
+                                       <input type="radio" value="D">
+                                       <span>D:</span><span th:text="${selection.d}">D:选项D</span>
                                    </label>
                                </div>
                                 <div>
@@ -58,28 +60,29 @@
                                 <h5>
                                     <span th:text="${selection.selNum}">题号</span>
                                     <span class="ml-2">多选</span>
+                                    <span th:text="${selection.selId}" hidden="hidden" class="sel_id"></span>
                                 </h5>
                                 <p th:text="${selection.selContent}">题干</p>
                                 <div>
-                                    <img th:src="@{${selection.imgUrl}}" style="max-height: 250px;max-width: 250px" alt="">
+                                    <img th:src="@{${selection.imgUrl}}" style="max-height: 250px;max-width: 350px" alt="">
                                 </div>
                                 <div class="btn-group-toggle btn-group-vertical mt-2" data-toggle="buttons">
-                                    <label class="btn btn-outline-primary" th:if="${selection.a}!=''">
+                                    <label class="btn btn-outline-primary text-left" th:if="${selection.a}!=''">
                                         <input type="checkbox" value="A">
-                                        <span th:text="${selection.a}">A:选项A</span>
+                                        <span>A:</span><span th:text="${selection.a}">A:选项A</span>
                                     </label>
-                                    <label class="btn btn-outline-primary" th:if="${selection.b}!=''">
+                                    <label class="btn btn-outline-primary text-left" th:if="${selection.b}!=''">
                                         <input type="checkbox" value="B">
-                                        <span th:text="${selection.b}">B:选项B</span>
+                                        <span>B:</span><span th:text="${selection.b}">B:选项B</span>
                                     </label>
 
-                                    <label class="btn btn-outline-primary" th:if="${selection.c}!=''">
+                                    <label class="btn btn-outline-primary text-left" th:if="${selection.c}!=''">
                                         <input type="checkbox" value="C">
-                                        <span th:text="${selection.c}">C:选项C</span>
+                                        <span>C:</span><span th:text="${selection.c}">C:选项C</span>
                                     </label>
-                                    <label class="btn btn-outline-primary" th:if="${selection.d}!=''">
+                                    <label class="btn btn-outline-primary text-left" th:if="${selection.d}!=''">
                                         <input type="checkbox" value="D">
-                                        <span th:text="${selection.d}">D:选项D</span>
+                                        <span>D:</span><span th:text="${selection.d}">D:选项D</span>
                                     </label>
                                     <div>
                                         <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
@@ -108,9 +111,10 @@
                 <div class="modal-body">
                     确认要提交吗?
                 </div>
+                <span id="submit_message" class="text-success ml-3"></span>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" id="cancel">取消</button>
+                    <button class="btn btn-primary" id="sub_selections">确定</button>
                 </div>
             </div>
         </div>
@@ -141,5 +145,56 @@
         /*获取第一个a标签，进行跳转*/
         window.location.href=$(obj[0]).attr("href");
     });
+    $('#sub_selections').click(function () {
+        $('#sub_selections').attr("disabled",true);
+        $('#submit_message').html("数据提交中...");
+        var selection=new Array();
+        $('#list li').each(function () {
+            var map={};
+            map['selId']=parseInt($(this).find('.sel_id').text());
+            var radio=$(this).find('input[type=radio]:checked').val();
+            if(radio!=''&&radio!=null&&typeof (radio)!='undefined'){
+                map['userSelect']=radio;
+            }
+            var userSelect="";
+            $(this).find('input[type=checkbox]:checked').each(function () {
+                userSelect+=$(this).val();
+                map['userSelect']=userSelect;
+            });
+            selection.push(map);
+        });
+        console.log(selection);
+        $.ajax({
+            //请求方式
+            type : "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //dataType:"json",
+            //请求地址
+            url : "/submitSelection/"+[[${cid}]]+"/"+[[${teacherid}]]+"/"+[[${actId}]],
+            //数据，json字符串
+            data : JSON.stringify(selection),
+            //请求成功
+            success : function(result) {
+                var data=$.parseJSON(result);
+                if (data.message){
+                    window.location.href="/ranking/"+[[${cid}]]+"/"+[[${teacherid}]]+"/"+[[${actId}]];
+                }else {
+                    $('#cancel').trigger('click');
+                    $('#message').html("未知异常,创建活动失败,请稍后重试!");
+                    $('#submit_message').html("");
+                    $('#sub_selections').attr("disabled",false);
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                $('#cancel').trigger('click');
+                $('#message').html("发送请求失败,请检查您的网络状态!");
+                $('#submit_message').html("");
+                $('#sub_selections').attr("disabled",false);
+            }
+        });
+    });
+
 </script>
 </html>

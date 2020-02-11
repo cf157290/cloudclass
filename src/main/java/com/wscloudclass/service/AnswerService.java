@@ -1,16 +1,19 @@
 package com.wscloudclass.service;
 
 import com.wscloudclass.dto.AnswerDTO;
+import com.wscloudclass.dto.UserAnswerDTO;
+import com.wscloudclass.mapper.PartiActivityMapper;
 import com.wscloudclass.mapper.SelectActivityMapper;
 import com.wscloudclass.mapper.SelectionMapper;
-import com.wscloudclass.model.SelectActivity;
-import com.wscloudclass.model.SelectActivityExample;
-import com.wscloudclass.model.Selection;
+import com.wscloudclass.mapper.UserAnswersMapper;
+import com.wscloudclass.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,6 +22,10 @@ public class AnswerService {
     SelectActivityMapper selectActivityMapper;
     @Autowired
     SelectionMapper selectionMapper;
+    @Autowired
+    UserAnswersMapper userAnswersMapper;
+    @Autowired
+    PartiActivityMapper partiActivityMapper;
     public List<AnswerDTO> getSelection(Long actId) {
         List<AnswerDTO> list=new ArrayList<>();
         SelectActivityExample example = new SelectActivityExample();
@@ -38,5 +45,20 @@ public class AnswerService {
             list.add(answerDTO);
         }
         return list;
+    }
+    @Transactional
+    public boolean insertUserAnswer(Long uid, Long actId, List<UserAnswerDTO> userAnswerDTOS) {
+        for (UserAnswerDTO userAnswerDTO:userAnswerDTOS){
+            UserAnswers userAnswers=new UserAnswers();
+            BeanUtils.copyProperties(userAnswerDTO,userAnswers);
+            userAnswers.setUid(uid);
+            userAnswersMapper.insertSelective(userAnswers);
+        }
+        PartiActivity record = new PartiActivity();
+        record.setUid(uid);
+        record.setActId(actId);
+        record.setPartiTime(new Date());
+        partiActivityMapper.insert(record);
+        return true;
     }
 }
