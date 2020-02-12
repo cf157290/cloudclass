@@ -49,9 +49,9 @@ public class ActivityController {
             }
         }else {
             //学生操作
-            if (actType==1){
+            if (status==1){//活动是否结束
                 //活动进行中
-                if (status==1){
+                if (actType==1){
                     //选择题
                     boolean flag=activityService.isParti(actId,user.getUid());//判断是否参与过活动
                     if (flag){
@@ -66,16 +66,15 @@ public class ActivityController {
                     boolean flag=activityService.isParti(actId,user.getUid());
                     if (flag){
                         //参与过
-                        return "ranking";
+                        return "redirect:/ranking/"+cid+"/"+teacherid+"/"+actId;
                     }else {
                         //未参与
-                        return "desanswer";
+                        return "redirect:/desanswer/"+cid+"/"+teacherid+"/"+actId;
                     }
                 }
-
             }else {
                 //活动结束
-                return"ranking";
+                return "redirect:/ranking/"+cid+"/"+teacherid+"/"+actId;
             }
         }
     }

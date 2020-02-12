@@ -66,8 +66,14 @@ public class AnswerController {
             throw new CustomizeException(CustomizeErrorCode.ERROR_SUBMIT_SELECTION);
         }
         boolean flag=answerService.insertUserAnswer(user.getUid(),actId,userAnswerDTOS);
-        Map<String,Boolean> map=new HashMap<>();
-        map.put("message",true);
-        return JSON.toJSONString(map);
+        if (flag){
+            Map<String,Boolean> map=new HashMap<>();
+            map.put("message",true);
+            return JSON.toJSONString(map);
+        }else {
+            Map<String,Boolean> map=new HashMap<>();
+            map.put("message",false);
+            return JSON.toJSONString(map);
+        }
     }
 }

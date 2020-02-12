@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RankingService {
@@ -25,6 +24,12 @@ public class RankingService {
     SelectionMapper selectionMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    DescriptionMapper descriptionMapper;
+    @Autowired
+    FileScoreMapper fileScoreMapper;
+    @Autowired
+    SubmitFileMapper submitFileMapper;
     public List<RankingDTO> getRanking(Long actId) {
         List<RankingDTO> list=new ArrayList<>();
         Activity activity = activityMapper.selectByPrimaryKey(actId);
@@ -79,15 +84,47 @@ public class RankingService {
                 rankingDTO.setScore(score);
                 list.add(rankingDTO);
             }
-            //List<RankingDTO> newList=list.stream().sorted(Comparator.comparing(RankingDTO::getScore).reversed()).collect(Collectors.toList());
-            Comparator<RankingDTO> byScore=Comparator.comparing(RankingDTO::getScore).reversed();//优先分数倒序
-            Comparator<RankingDTO> byPartiTime=Comparator.comparing(RankingDTO::getPartiTime);//时间正序
-            Comparator<RankingDTO> byUserNumber=Comparator.comparing(RankingDTO::getUserNumber);//学号正序
-            list.sort(byScore.thenComparing(byPartiTime).thenComparing(byUserNumber));
-            return list;
+
         }else {
             //描述题
-            return null;
+            //查询此活动的描述题
+            Description description = descriptionMapper.selectByPrimaryKey(activity.getDesId());
+            for (PartiActivity partiActivity:partiActivities){
+                RankingDTO rankingDTO=new RankingDTO();
+                int score=0;
+                if (description.getScore()!=null){
+                    score+=description.getScore();
+                }
+                //查询此用户提交的过文件
+                SubmitFileExample submitFileExample = new SubmitFileExample();
+                submitFileExample.createCriteria().andUidEqualTo(partiActivity.getUid());
+                List<SubmitFile> submitFiles = submitFileMapper.selectByExample(submitFileExample);
+                for (SubmitFile submitFile:submitFiles){
+                    FileScoreExample fileScoreExample = new FileScoreExample();
+                    fileScoreExample.createCriteria().andFileIdEqualTo(submitFile.getFileId());
+                    List<FileScore> fileScores = fileScoreMapper.selectByExample(fileScoreExample);
+                    for (FileScore fileScore:fileScores){
+                        //找到此描述题的文件
+                        if (fileScore.getDesId().equals(description.getDesId())){
+                            if (fileScore.getScore()!=null){
+                                score+=fileScore.getScore();
+                            }
+                        }
+                    }
+                }
+                rankingDTO.setScore(score);
+                User user = userMapper.selectByPrimaryKey(partiActivity.getUid());
+                rankingDTO.setUserNumber(user.getUserNumber());
+                rankingDTO.setUserName(user.getUsername());
+                rankingDTO.setPartiTime(partiActivity.getPartiTime());
+                list.add(rankingDTO);
+            }
         }
+        //List<RankingDTO> newList=list.stream().sorted(Comparator.comparing(RankingDTO::getScore).reversed()).collect(Collectors.toList());
+        Comparator<RankingDTO> byScore=Comparator.comparing(RankingDTO::getScore).reversed();//优先分数倒序
+        Comparator<RankingDTO> byPartiTime=Comparator.comparing(RankingDTO::getPartiTime);//时间正序
+        Comparator<RankingDTO> byUserNumber=Comparator.comparing(RankingDTO::getUserNumber);//学号正序
+        list.sort(byScore.thenComparing(byPartiTime).thenComparing(byUserNumber));
+        return list;
     }
 }
