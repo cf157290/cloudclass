@@ -12,9 +12,13 @@
         <div class="container bg-white">
             <div class="row">
                 <div class="col-12 d-flex justify-content-between mt-3">
-                    <span>活动名称</span>
+                    <span >
+                        <div th:text="${actName}">活动名称</div>
+                        <a th:href="@{'/ranking/'+${cid}+'/'+${teacherid}+'/'+${actId}}">查看排名</a>
+                    </span>
                     <button class="btn btn-primary">下载全部文件</button>
                 </div>
+                <span class="message text-danger ml-3"></span>
             </div>
             <div class="row mt-3">
                 <div class="col-12 table-responsive">
@@ -23,34 +27,74 @@
                         <tr>
                             <th>编号</th>
                             <th>姓名</th>
+                            <th>学号</th>
                             <th>文件名称</th>
                             <th>提交日期</th>
                             <th>分值</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Doe</td>
-                            <td>john@example.com
-                                <button class="btn btn-primary"> 下载</button>
+                        <tr th:each="score,scoreCount:${scores}" id="tr">
+                            <td th:text="${scoreCount.count}" >1</td>
+                            <td th:text="${score.userName}">Doe</td>
+                            <td th:text="${score.userNumber}">111111111111</td>
+                            <td> <span th:text="${score.fileName}"></span>
+                                <a  th:href="${score.fileUrl}">
+                                    <button class="btn btn-primary">下载</button>
+                                </a>
+                                <span hidden="hidden" th:text="${score.uid}" class="uid"></span>
                             </td>
-                            <td>1111/11/11</td>
+                            <td th:text="${#dates.format(score.partiTime,'yyyy-MM-dd')}">1111/11/11</td>
                             <td>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" placeholder="1">
-                                    <div class="input-group-append">
-<!--                                        有默认值则为修改-->
-                                        <button class="btn btn-primary">提交</button>
-                                    </div>
-                                </div>
+                                <input type="number" class="form-control score"  th:placeholder="${score.score}">
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="col-12 d-flex justify-content-center" th:if="${canSubmit}">
+                    <button class="btn btn-primary" style="width: 200px" id="subScore">提交</button>
+                </div>
             </div>
         </div>
     </div>
 </body>
+<script>
+    $('#subScore').click(function () {
+        var userScore=new Array();
+        $('#tr').each(function () {
+            var map={};
+            var uid=parseInt($(this).find('.uid').text());
+            var score=parseInt($(this).find('.score').val());
+            if (score == '' || score == "undefined"){
+                score=parseInt($(this).find('.score').attr('placeholder'));
+            }
+            map['uid']=uid;
+            map['score']=score;
+            userScore.push(map);
+        });
+        $.ajax({
+            //请求方式
+            type : "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //dataType:"json",
+            //请求地址
+            url : "/submitUserScore/"+[[${cid}]]+"/"+[[${teacherid}]]+"/"+[[${actId}]],
+            //数据，json字符串
+            data : JSON.stringify(userScore),
+            //请求成功
+            success : function(result) {
+                var data=$.parseJSON(result);
+                if (data.message){
+                    window.location.href="/score/"+[[${cid}]]+"/"+[[${teacherid}]]+"/"+[[${actId}]];
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                $('#message').html("发送请求失败,请检查您的网络状态!");
+            }
+        });
+    })
+</script>
 </html>

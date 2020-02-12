@@ -45,8 +45,14 @@
                             </tbody>
                         </table>
                     </div>
-
-
+                </div>
+                <div class="col-12" th:if="${isnull}">
+                    <div class="d-flex justify-content-center">
+                        <img src="/img/noranking.png" style="width: 350px;height: 350px">
+                    </div>
+                    <div class="text-center">
+                        <h5>暂无提交记录</h5>
+                    </div>
                 </div>
             </div>
         </div>

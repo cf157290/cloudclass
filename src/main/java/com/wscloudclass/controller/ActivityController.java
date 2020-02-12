@@ -45,7 +45,7 @@ public class ActivityController {
                 return "redirect:/ranking/"+cid+"/"+teacherid+"/"+actId;
             }else {
                 //描述题
-                return "score";
+                return "redirect:/score/"+cid+"/"+teacherid+"/"+actId;
             }
         }else {
             //学生操作
