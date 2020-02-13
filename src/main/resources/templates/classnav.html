@@ -17,26 +17,26 @@
                     <div class="card-img-overlay">
                         <div class="row">
                             <div class="col-md-3 col-4 d-flex justify-content-end">
-                                <img src="/img/logo.png" class="img-thumbnail" style="width: 120px;height: 120px" alt="">
+                                <img src="/img/logo.png" class="img-thumbnail" style="width: 120px;height: 120px" id="img">
                             </div>
                             <div class="col-md-9 col-8">
                                 <div class="row" style="height: 50px">
-                                    <h5 class="mt-3">院系班级</h5>
+                                    <h5 class="mt-3" id="class_name"></h5>
                                 </div>
                                 <div class="row" style="height: 35px">
-                                    <small>班课名称</small>
-                                    <small class="ml-3" th:if="${session.user.getUid()} == ${teacherid}">邀请码</small>
+                                    <small id="course_name"></small>
                                     <span hidden th:text="${cid}" id="cid"></span>
                                     <span hidden th:text="${teacherid}" id="teacherid"></span>
                                 </div>
                                 <div class="row" style="height: 35px">
-                                    <button class="btn btn-primary" style="width: 100px;height: 35px" th:if="${session.user.getUid()} != ${teacherid}">签到</button>
+                                    <button class="btn btn-primary" style="width: 100px;height: 35px" th:if="${session.user.getUid()} != ${teacherid}" data-toggle="modal" data-target="#stu_sign">签到</button>
                                     <div class="dropdown" th:if="${session.user.getUid()} == ${teacherid}">
                                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="height: 35px">
                                             教师操作
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">发起签到</a>
+                                            <a class="dropdown-item" href="#" id="invite_link">班课邀请码</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sign_in">发起签到</a>
                                             <a class="dropdown-item" href="#">发布通知</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#create_activity">发起活动</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#up">上传资源</a>
@@ -71,6 +71,7 @@
                     </ul>
                 </div>
             </div>
+            <button hidden data-toggle="modal" data-target="#invite_code" id="invite_button"></button>
         </div>
         <!--上传资源模态框-->
         <div class="modal fade" tabindex="-1" id="up" data-backdrop="static" data-keyboard="false">
@@ -81,7 +82,7 @@
                         <button class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <input type="text"class="form-control" placeholder="文件名称(选填)">
+                        <input type="text" class="form-control" placeholder="文件名称(选填)">
                         <input type="file" class="form-control file-loading" id="upfile">
                     </div>
                     <div class="modal-footer">
@@ -114,19 +115,189 @@
                 </div>
             </div>
         </div>
-        <script>
+<!--        班课邀请码模态框-->
+        <div class="modal fade" tabindex="-1" id="invite_code" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">提示</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="show_invite_code"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        学生签到模态框-->
+        <div class="modal fade" tabindex="-1" id="stu_sign" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">提示</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" placeholder="请输入签到码" id="stu_code">
+                        <span class="text-danger" id="stu_sign_message"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="sub_stu_code_close" data-dismiss="modal">关闭</button>
+                        <button class="btn btn-primary" id="sub_stu_code">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        发起签到模态框-->
+        <div class="modal fade" tabindex="-1" id="sign_in" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">提示</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" placeholder="请输入签到码(只允许同时进行一次签到)" id="sign_code">
+                        <span class="text-danger" id="sign_message"></span>
+                        <input type="number" class="form-control mt-2" placeholder="签到得分(默认为1)" id="score">
+                        <input type="number" class="form-control mt-2" placeholder="签到时长(默认5分钟),可手动结束签到" id="minute">
+                        <span class="text-danger" id="minute_message"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal" id="sign_close">关闭</button>
+                        <button class="btn btn-primary" id="start_sign_in">开始签到</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
             $(document).ready(function() {
                 $("#upfile").fileinput({
                     showUpload: false,
                     dropZoneEnabled: false,
                     maxFileCount: 1,
                     mainClass: "input-group-lg",
-                    allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                    //allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
                     showRemove :true,//显示一处按钮
                     language: 'zh', //设置语言
                     maxFileSize: 1024*10//文件大小
                 });
+                $.ajax({url:"/getClassInfo/"+[[${cid}]],success:function(result){
+                        var data=$.parseJSON(result);
+                        if (data.message){
+                            if ($.trim(data.img)!='/img/cloud.png'){
+                                $('#img').attr('src',data.img);
+                            }
+                            $('#class_name').html(data.className);
+                            $('#course_name').html(data.courseName);
+                        }
+                    }});
             });
+            $('#invite_link').click(function () {
+                $.ajax({url:"/getInviteCode/"+[[${cid}]],success:function(result){
+                    var data=$.parseJSON(result);
+                    if (data.message){
+                        $('#invite_button').trigger('click');
+                        $('#show_invite_code').html('班课邀请码:'+data.inviteCode);
+                    }
+                }});
+            });
+            $('#sign_close').click(function () {
+               $('#sign_message').html('');
+            });
+            $('#start_sign_in').click(function () {
+                var sign_code=$('#sign_code').val();
+                if (sign_code==''||sign_code==null||sign_code=='undefined'){
+                    $('#sign_message').html("请输入签到码!");
+                    return;
+                }
+                var score=parseInt($('#score').val());
+                if (score==''||typeof(score)=='undefined'||score==null||isNaN(score)){
+                    score=1;
+                }
+                var minute=parseInt($('#minute').val());
+                if (minute == '' || typeof(minute) == 'undefined' || isNaN(minute) ){
+                    minute=5;
+                }
+                var map={};
+                map['signCode']=sign_code;
+                map['score']=score;
+                map['minute']=minute;
+                $.ajax({url:"/checkSignIn/"+[[${cid}]]+"/"+[[${teacherid}]],
+                    success:function(result){
+                        var data=$.parseJSON(result);
+                        if (data.message){
+                            //没有进行中的签到活动，创建新签到
+                            $.ajax({
+                                //请求方式
+                                type : "POST",
+                                //请求的媒体类型
+                                contentType: "application/json;charset=UTF-8",
+                                //请求地址
+                                url : "/createSignIn/"+[[${cid}]]+"/"+[[${teacherid}]],
+                                //数据，json字符串
+                                data : JSON.stringify(map),
+                                //请求成功
+                                success : function(result) {
+                                    var data=$.parseJSON(result);
+                                    if (data.message){
+                                        //创建签到成功,进行页面跳转
+                                        window.location.href="/signIn/"+[[${cid}]]+"/"+[[${teacherid}]];
+                                    }
+                                },
+                                //请求失败，包含具体的错误信息
+                                error : function(e){
+                                }
+                            });
+
+                        } else {
+                            //跳转到正在进行的签到页面
+                            window.location.href="/signIn/"+[[${cid}]]+"/"+[[${teacherid}]];
+                        }}
+                    }
+                );
+            });
+            $('#sub_stu_code').click(function () {
+                var code=$('#stu_code').val();
+                var map={};
+                map['code']=code;
+                $.ajax(
+                    {
+                        url:"/submitSignInCode/"+[[${cid}]]+"/"+[[${teacherid}]],
+                        type:"POST",
+                        contentType: "application/json;charset=UTF-8",
+                        data : JSON.stringify(map),
+                        success:function(result){
+                            var data=$.parseJSON(result);
+                            if (data.message){
+                                //签到成功
+                                window.location.href="/signIn/"+[[${cid}]]+"/"+[[${teacherid}]];
+                            }else {
+                                //签到失败
+                                if (data.doubleSign){
+                                    //重复签到
+                                    $('#stu_sign_message').html("当前签到已完成，请勿重复签到!");
+                                }
+                                if (data.errCode){
+                                    //签到码错误
+                                    $('#stu_sign_message').html("签到码错误!");
+                                }
+
+                                if (data.signEnd){
+                                    //签到已经结束
+                                    $('#stu_sign_message').html("没有正在进行的签到!");
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+            $('#sub_stu_code_close').click(function () {
+                $('#stu_sign_message').html("");
+            })
         </script>
 
     </div>

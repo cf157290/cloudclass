@@ -6,10 +6,13 @@ import com.wscloudclass.dto.CreateCourseDTO;
 import com.wscloudclass.dto.UserDTO;
 import com.wscloudclass.exception.CustomizeErrorCode;
 import com.wscloudclass.exception.CustomizeException;
+import com.wscloudclass.mapper.CourseMapper;
+import com.wscloudclass.model.Course;
 import com.wscloudclass.service.CreateCourseService;
 import com.wscloudclass.service.JoinCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,8 @@ public class CreateAndJoinCourseController {
     CreateCourseService createCourseService;
     @Autowired
     JoinCourseService joinCourseService;
+    @Autowired
+    CourseMapper courseMapper;
     @RequestMapping("/create")
     public String create(){
         return "/create";
@@ -76,5 +81,25 @@ public class CreateAndJoinCourseController {
             map.put("code",2);
             return JSON.toJSONString(map);
         }
+    }
+    @ResponseBody
+    @GetMapping("/getInviteCode/{cid}")
+    public String getInviteCode(@PathVariable(name = "cid")Long cid){
+        Course course = courseMapper.selectByPrimaryKey(cid);
+        Map<String,Object>map=new HashMap<>();
+        map.put("message",true);
+        map.put("inviteCode",course.getInvitCode());
+        return JSON.toJSONString(map);
+    }
+    @ResponseBody
+    @GetMapping("/getClassInfo/{cid}")
+    public String getClassInfo(@PathVariable(name = "cid")Long cid){
+        Course course = courseMapper.selectByPrimaryKey(cid);
+        Map<String,Object> map=new HashMap<>();
+        map.put("message",true);
+        map.put("className",course.getClassName());
+        map.put("courseName",course.getCourseName());
+        map.put("img",course.getCourseUrl());
+        return JSON.toJSONString(map);
     }
 }

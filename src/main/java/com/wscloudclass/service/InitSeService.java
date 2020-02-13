@@ -45,17 +45,17 @@ public class InitSeService {
         }
         activity.setActType(1);
         Calendar calendar=Calendar.getInstance();
-        Date date=calendar.getTime();
+        Date startDate=calendar.getTime();
         if (activityName.equals("")){
-            activity.setActivityName("测试活动"+date);
+            activity.setActivityName("测试活动"+startDate);
         }else {
             activity.setActivityName(activityName);
         }
-        activity.setStartTime(date);
+        activity.setStartTime(startDate);
         //活动结束日期
         calendar.add(Calendar.DATE, Integer.parseInt(duration));
-        date=calendar.getTime();
-        activity.setEndTime(date);
+        Date endDate=calendar.getTime();
+        activity.setEndTime(endDate);
         activity.setCid(cid);
         activityMapper.insertSelective(activity);
         int isInsert;

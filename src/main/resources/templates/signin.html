@@ -12,7 +12,11 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-between mt-3">
                     <h4>完成签到列表</h4>
-                    <button class="btn btn-primary">结束签到</button>
+                    <button class="btn btn-primary" th:if="${session.user.uid}==${teacherid}" id="end_sign_in">结束签到</button>
+                </div>
+                <div>
+                    <span class="ml-3" id="sign_in_code">签到码</span>
+                    <span class="text-danger ml-3" id="sign_in_message"></span>
                 </div>
             </div>
             <div class="row">
@@ -27,13 +31,13 @@
                                 <th>签到时间</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
+                            <tbody id="tbody">
+<!--                            <tr>
                                 <td>1</td>
                                 <td>吖吖</td>
                                 <td>111111111111</td>
                                 <td>11/11/11</td>
-                            </tr>
+                            </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -42,4 +46,79 @@
         </div>
     </div>
 </body>
+<script th:inline="javascript">
+    $(function () {
+        //获取签到码
+        $.ajax({url:"/getSignInCode/"+[[${cid}]],
+            success:function(result){
+                var data=$.parseJSON(result);
+                $('#sign_in_code').html('签到码:'+data.signInCode);
+            }});
+        //获取签到信息
+        var look=function(){
+            $.ajax({
+                url:'/lookSignIn/'+[[${cid}]],
+                //data:"user=client1",
+                //type:'post',
+                success:function(result){
+                    var data=$.parseJSON(result);
+                    if(data.message){
+                        //签到正在进行中
+                        var count=1;
+                        var trs="";
+                        $.each(data.signIn,function (key, value) {
+                            var userName=value.user.userName;
+                            var userNumber=value.user.userNumber;
+                            var signDate=timestampToTime(value.signDate);
+                            trs+="<tr>\n" +
+                                "                                <td>"+count+"</td>\n" +
+                                "                                <td>"+userName+"</td>\n" +
+                                "                                <td>"+userNumber+"</td>\n" +
+                                "                                <td>"+signDate+"</td>\n" +
+                                "                            </tr>";
+                            count++;
+                        });
+                        $('#tbody').html(trs);
+                        //console.log('服务端推送信息:%s',res.data.message);
+                        //TODO 对服务端推送的信息进行处理
+                        //清除定时器
+                        //clearInterval(loopAsk);
+                    }else {
+                        // 签到结束
+                        $('#sign_in_message').html("当前签到已结束");
+                        $('#end_sign_in').attr('disabled',true);
+                        window.clearInterval(lookSign);
+                    }
+                }
+            });
+        };
+        var lookSign=setInterval(look,1000);
+    });
+    $('#end_sign_in').click(function () {
+        $.ajax({url:"/endSignIn/"+[[${cid}]]+"/"+[[${teacherid}]],
+            success:function(result){
+                var data=$.parseJSON(result);
+                if (data.message){
+                    $('#sign_in_message').html("签到已结束");
+                    $('#end_sign_in').attr('disabled',true);
+                }
+            }});
+    });
+
+    /**
+     * 日期格式化
+     * @param timestamp
+     * @returns {*}
+     */
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = (date.getMinutes() < 10 ? '0'+(date.getMinutes()) : date.getMinutes()) + ':';
+        s = (date.getSeconds() < 10 ? '0'+(date.getSeconds()) : date.getSeconds());
+        return Y+M+D+h+m+s;
+    }
+</script>
 </html>

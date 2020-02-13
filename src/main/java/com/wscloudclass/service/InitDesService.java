@@ -64,17 +64,17 @@ public class InitDesService {
         }
         activity.setActType(2);
         Calendar calendar=Calendar.getInstance();
-        Date date=calendar.getTime();
+        Date startTime=calendar.getTime();
         if (createDesDTO.getActivityName().equals("")){
-            activity.setActivityName("测试活动"+date);
+            activity.setActivityName("测试活动"+startTime);
         }else {
             activity.setActivityName(createDesDTO.getActivityName());
         }
-        activity.setStartTime(date);
+        activity.setStartTime(startTime);
         //活动结束日期
         calendar.add(Calendar.DATE, createDesDTO.getDuration());
-        date=calendar.getTime();
-        activity.setEndTime(date);
+        Date endDate=calendar.getTime();
+        activity.setEndTime(endDate);
         activity.setCid(cid);
         activity.setDesId(desId);
         int i = activityMapper.insert(activity);
