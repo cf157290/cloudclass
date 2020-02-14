@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-12">
                     <p th:text="${description.desContent}">题目描述</p>
-                    <div class="media">
+                    <div class="media"  th:if="${message}">
                         <div class="media-left media-middle">
                             <img src="/img/resources.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
                         </div>

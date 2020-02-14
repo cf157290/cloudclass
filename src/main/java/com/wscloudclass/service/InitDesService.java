@@ -39,11 +39,13 @@ public class InitDesService {
             }
         }
         description.setDesContent(createDesDTO.getDesContent());
-        description.setFileName(createDesDTO.getFile().getOriginalFilename());
-        description.setFileUrl(aliyunOSSUtils.uploadFile(createDesDTO.getFile()));
-        description.setFileSize((int) createDesDTO.getFile().getSize());
+        if (!createDesDTO.getFile().getOriginalFilename().equals("")){
+            description.setFileName(createDesDTO.getFile().getOriginalFilename());
+            description.setFileUrl(aliyunOSSUtils.uploadFile(createDesDTO.getFile()));
+            description.setFileSize((int) createDesDTO.getFile().getSize());
+        }
         description.setScore(createDesDTO.getScore());
-        int insert = descriptionMapper.insert(description);
+        int insert = descriptionMapper.insertSelective(description);
         if (insert!=1){
             return false;
         }

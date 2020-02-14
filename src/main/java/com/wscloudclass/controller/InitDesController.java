@@ -7,6 +7,7 @@ import com.wscloudclass.exception.CustomizeException;
 import com.wscloudclass.service.InitDesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,8 @@ public class InitDesController {
     public String createDesActivity(@PathVariable(name = "cid")Long cid,
                                     @PathVariable(name = "teacherid")Long teacherid,
                                     HttpServletRequest request,
-                                    CreateDesDTO createDesDTO) throws IOException {
+                                    CreateDesDTO createDesDTO,
+                                    Model model) throws IOException {
         UserDTO user = (UserDTO) request.getSession().getAttribute("user");
         if (!teacherid.equals(user.getUid())){
             throw new CustomizeException(CustomizeErrorCode.ERROR_CREATE_ACTIVITY);

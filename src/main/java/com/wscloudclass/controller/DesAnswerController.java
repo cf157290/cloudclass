@@ -24,7 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
-public class DesAnswerController {
+public class
+DesAnswerController {
     @Autowired
     ActivityService activityService;
     @Autowired
@@ -55,6 +56,10 @@ public class DesAnswerController {
             Description description = descriptionMapper.selectByPrimaryKey(activity.getDesId());
             BeanUtils.copyProperties(description,descriptionDTO);
             model.addAttribute("description",descriptionDTO);
+            model.addAttribute("message",true);
+            if (description.getFileName()==null){
+                model.addAttribute("message",false);
+            }
             return "desanswer";
         }
     }
