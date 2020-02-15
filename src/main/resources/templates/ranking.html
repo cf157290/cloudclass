@@ -16,9 +16,9 @@
                     <hr>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" th:if="${activityType}==1">
                 <div class="col-12 text-right">
-                    <a href="">查看统计分析</a>
+                    <a th:unless="${isnull}" th:href="@{'/result/'+${cid}+'/'+${teacherid}+'/'+${actId}}">查看统计分析</a>
                 </div>
             </div>
             <div class="row">

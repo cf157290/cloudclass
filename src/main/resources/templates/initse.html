@@ -25,7 +25,8 @@
                             <p>1</p>
                             <span> 请输入题干</span>
                             <textarea name="" id="" class="form-control stem" cols="30" rows="3"></textarea>
-                            <span>图片</span>
+                            <span class="text-danger stem_message"></span>
+                            <p>图片</p>
                             <input type="file" class="file-loading fl">
                             <div class="input-group mt-3">
                                 <div class="input-group-prepend">
@@ -171,7 +172,8 @@
             '                            <p>'+tihao+'</p>\n' +
             '                            <span> 请输入题干</span>\n' +
             '                            <textarea name="" id="" class="form-control stem" cols="30" rows="3"></textarea>\n' +
-            '                            <span>图片</span>\n' +
+            '                            <span class="text-danger stem_message"></span>\n' +
+            '                            <p>图片</p>\n' +
             '                            <input type="file" class="file-loading fl">\n' +
             '                            <div class="input-group mt-3">\n' +
             '                                <div class="input-group-prepend">\n' +
@@ -278,8 +280,16 @@
             $('#activity_name_message').html("");
         }
         $('#list li').each(function () {
+            var stem=$(this).find('.stem').val();
             var itemA=$(this).find('.itemA').val();
             var itemB=$(this).find('.itemB').val();
+            if (stem==""){
+                $('.stem_message').html("此项不能为空");
+                $('#cancel').trigger('click');
+                $('#submit_message').html("")
+            } else {
+                $('.stem_message').html("");
+            }
             if (itemA==""){
                 $('.itemA_message').html("此项不能为空");
                 $('#cancel').trigger('click');

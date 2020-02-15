@@ -26,6 +26,7 @@ public class RankingController {
         List<RankingDTO> list=rankingService.getRanking(actId);
         Activity activity = activityMapper.selectByPrimaryKey(actId);
         model.addAttribute("activityName",activity.getActivityName());
+        model.addAttribute("activityType",activity.getActType());
         if(list.size()>0){
             model.addAttribute("rankings",list);
         }else {

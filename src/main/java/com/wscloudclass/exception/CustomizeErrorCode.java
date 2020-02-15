@@ -8,7 +8,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     ERROR_SUBMIT_SELECTION(2005,"您不能回答自己的问题!"),
     ERROR_CREATE_DESACTIVITY(2006,"未知原因,创建活动异常,请稍后重试!"),
     ERROR_SUBMIT_DESACTIVITY(2007,"未知原因,文件提交失败,请稍后重试!"),
-    ERROR_SIGN_IN(2008,"您不能参与自己班课的签到!");
+    ERROR_SIGN_IN(2008,"您不能参与自己班课的签到!"),
+    ERROR_ACTIVITY_RESULT(2009,"题目无解!");
 
 
     private int code;

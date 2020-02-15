@@ -13,38 +13,51 @@
         <div class="container bg-white">
             <div class="row">
                 <div class="col-12">
-                    <h4 class="mt-3">活动名称</h4>
+                    <h4 class="mt-3" th:text="${actName}">活动名称</h4>
                     <hr>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" th:if="${teacherid}==${session.user.uid}">
                 <div class="col-12 text-center">
-                    <h4>姓名的个人结果</h4>
-                    <span>学号:111111111111</span>
-                    <span class="ml-5">得分:1</span>
+                    <h4 th:text="${userName}">姓名的个人结果</h4>
+                    <span th:text="${userNumber}">学号:111111111111</span>
+                    <span class="ml-5" th:text="${score}">得分:1</span>
                     <hr>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            <h4>题号</h4>
-                            <p>题目描述</p>
-                            <img src="img/logo.png" style="max-height: 200px;max-width: 200px" alt="">
-                            <P>A:选项A</P>
-                            <P class="text-success">A:选项B</P>
-                            <P>A:选项B</P>
-                            <P>A:选项D</P>
-                            <span>正确答案:B</span>
-                            <span class="ml-3">你的答案:A</span>
-                            <span class="ml-3">正确率:49%</span>
-                            <span class="ml-3">A:1人</span>
-                            <span class="ml-3">B:1人</span>
-                            <span class="ml-3">C:1人</span>
-                            <span class="ml-3">D:1人</span>
+                        <li class="list-group-item" th:each="selection:${selections}">
+                            <h4 th:text="${selection.selNum}">题号</h4>
+                            <p th:text="${selection.selContent}">题目描述</p>
+                            <img th:src="@{${selection.imgUrl}}" style="max-height: 200px;max-width: 200px" alt="" th:if="${selection.haveImg}">
+                            <div>
+                                <P class="text-success" th:if="${selection.ATrue}" th:text="${'A:'+selection.a}">A:选项A</P>
+                                <P  th:unless="${selection.ATrue}" th:text="${'A:'+selection.a}">A:选项A</P>
+                            </div>
+                            <div>
+                                <P class="text-success" th:if="${selection.BTrue}" th:text="${'B:'+selection.b}">A:选项B</P>
+                                <P th:unless="${selection.BTrue}" th:text="${'B:'+selection.b}">A:选项B</P>
+                            </div>
+                            <div th:if="${selection.haveC}">
+                                <P class="text-success" th:if="${selection.CTrue}" th:text="${'C:'+selection.c}">A:选项B</P>
+                                <P th:unless="${selection.CTrue}" th:text="${'C:'+selection.c}">A:选项D</P>
+                            </div>
+                            <div th:if="${selection.haveD}">
+                                <P class="text-success" th:if="${selection.DTrue}" th:text="${'D:'+selection.d}">A:选项D</P>
+                                <P th:unless="${selection.DTrue}" th:text="${'D:'+selection.d}">A:选项D</P>
+                            </div>
+                            <span th:text="${'正确答案:'+selection.correctOption}">正确答案:B</span>
+                            <span class="ml-3" th:if="${teacherid}!=${session.user.uid}" th:text="${'你的答案:'+selection.yourOption}">你的答案:A</span>
+                            <span class="ml-3" th:text="${'正确率:'+selection.accRate}+'%'">正确率:49%</span>
+                            <span class="ml-3" th:text="${'A:'+selection.chooseA+'人'}">A:1人</span>
+                            <span class="ml-3" th:text="${'B:'+selection.chooseB+'人'}">B:1人</span>
+                            <span class="ml-3" th:text="${'C:'+selection.chooseC+'人'}">C:1人</span>
+                            <span class="ml-3" th:text="${'D:'+selection.chooseD+'人'}">D:1人</span>
                             <hr>
-                            <span>解析:</span>
+                            <span th:if="${selection.haveAna}" th:text="${'题目解析:'+selection.selAna}">解析:</span>
+                            <span th:unless="${selection.haveAna}" th:text="${'题目解析:无'}">解析:</span>
                         </li>
                     </ul>
                 </div>
