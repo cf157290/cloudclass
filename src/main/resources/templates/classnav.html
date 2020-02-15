@@ -52,9 +52,9 @@
 
             <div class="row d-flex justify-content-center bg-light" style="height: 50px">
                 <div class="mt-2">
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs" id="classnav">
                         <li class="nav-item navclass">
-                            <a href="resources.html" class="nav-link ziyuan" data-toggle="tab">资源</a>
+                            <a th:href="@{'/resources/'+${cid}+'/'+${teacherid}}" class="nav-link ziyuan" data-toggle="tab">资源</a>
                         </li>
                         <li class="nav-item navclass">
                             <a th:href="@{'/member/'+${cid}+'/'+${teacherid}+'/'+${session.user.uid}}" class="nav-link chengyuan" data-toggle="tab" data-target="#tab2">成员</a>
@@ -82,12 +82,13 @@
                         <button class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" class="form-control" placeholder="文件名称(选填)">
-                        <input type="file" class="form-control file-loading" id="upfile">
+                        <input type="text" maxlength="30" class="form-control mb-2" placeholder="文件名称(选填)" id="file_name">
+                        <input type="file" class="form-control file-loading" id="resource">
+                        <span class="text-danger" id="resource_message"></span>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button class="btn btn-primary">确定</button>
+                        <button class="btn btn-secondary" data-dismiss="modal" id="submit_cancel">取消</button>
+                        <button class="btn btn-primary" id="submit_resource">确定</button>
                     </div>
                 </div>
             </div>
@@ -174,8 +175,14 @@
             </div>
         </div>
         <script th:inline="javascript">
+            $("#classnav li").click(function(){
+                /*当前标签下的a标签*/
+                var obj = $(this).children("a");
+                /*获取第一个a标签，进行跳转*/
+                window.location.href=$(obj[0]).attr("href");
+            });
             $(document).ready(function() {
-                $("#upfile").fileinput({
+                $("#resource").fileinput({
                     showUpload: false,
                     dropZoneEnabled: false,
                     maxFileCount: 1,
@@ -297,6 +304,49 @@
             });
             $('#sub_stu_code_close').click(function () {
                 $('#stu_sign_message').html("");
+            });
+            $('#submit_resource').click(function () {
+                var fileName=$('#file_name').val();
+                var resource=$('#resource').get(0).files[0];
+                if (typeof (resource)=="undefined"){
+                    $('#resource_message').html("文件不能为空");
+                    return;
+                }
+                var map={};
+                map['fileName']=fileName;
+                var formData=new FormData();
+                var fileNameData=JSON.stringify(map);
+                formData.append('fileName',new Blob([fileNameData],{type: "application/json"}));
+                formData.append('resource',resource);
+                $.ajax({
+                    //请求方式
+                    type : "POST",
+                    //请求的媒体类型
+                    //contentType: "application/json;charset=UTF-8",
+                    contentType: false,
+                    //contentType: "multipart/form-data;;charset=UTF-8",
+                    processData: false,
+                    dataType:"json",
+                    //请求地址
+                    url : "/uploadResource/"+[[${cid}]]+"/"+[[${teacherid}]],
+                    //数据，json字符串
+                    data : formData,
+                    //请求成功
+                    success : function(result) {
+                        if (result.message){
+                            window.location.href="/resources/"+[[${cid}]]+"/"+[[${teacherid}]];
+                        }
+                        //var data=$.parseJSON(result);
+                    },
+                    //请求失败，包含具体的错误信息
+                    error : function(e){
+                    }
+                });
+                $(this).attr("disabled",true);
+            });
+            $('#submit_cancel').click(function () {
+                $('#submit_resource').attr("disabled",false);
+                $('#resource_message').html("");
             })
         </script>
 

@@ -25,7 +25,7 @@
                         </div>
                         <div class="media-body">
                             <h5 class="mt-0" th:text="${description.fileName}">资源名称</h5>
-                            <span th:text="${'文件大小:'+#numbers.formatDecimal(description.fileSize/1024.0,1,2)}+'KB'">文件大小</span>
+                            <span th:text="${'文件大小:'+#numbers.formatDecimal(description.fileSize/1024.0/1024.0,1,2)}+'MB'">文件大小</span>
                             <span class="ml-3" th:text="${'上传时间:'+#dates.format(description.subTime,'yyyy-MM-dd')}">发布时间</span>
                             <a th:href="@{${description.fileUrl}}">
                                 <button class="btn btn-primary btn-sm ml-3">下载文件</button>
@@ -77,12 +77,6 @@
             language: 'zh', //设置语言
             maxFileSize: 1024*10//文件大小
         });
-    });
-    $("ul li").click(function(){
-        /*当前标签下的a标签*/
-        var obj = $(this).children("a");
-        /*获取第一个a标签，进行跳转*/
-        window.location.href=$(obj[0]).attr("href");
     });
 </script>
 </html>

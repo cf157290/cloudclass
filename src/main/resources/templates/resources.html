@@ -9,51 +9,43 @@
     <div th:insert="~{navigation::nav}"></div>
     <div th:insert="~{ classnav::classhead}"></div>
     <div class="container-fluid bg-light">
-        <div class="container bg-white">
+        <div class="container bg-white" th:if="${message}">
             <div class="row" style="height: 150px">
-                <div class="col-7 pr-0 offset-2">
-                    <input type="text" class="form-control mt-5 mr-0" placeholder="根据资源名称搜索">
-                </div>
-                <div class="col-3 pl-0 mt-5">
-                    <button class="btn btn-secondary">搜索</button>
+                <div class="col-8 pr-0 offset-2">
+                    <input type="text" class="form-control mt-5 mr-0" id="search" placeholder="根据资源信息搜索">
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
-                    <ul class="list-group " >
-                        <li class="mt-1 list-group-item" >
+                <div class="col-12" >
+                    <ul class="list-group" id="newList">
+                        <li class="mt-1 list-group-item" th:each="resource:${resources}">
                             <div class="media">
                                 <div class="media-left media-middle">
-                                    <img src="img/resources.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
+                                    <img src="/img/resources.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
                                 </div>
                                 <div class="media-body">
-                                    <h5 class="mt-0">资源名称</h5>
-                                    <span>文件大小</span>
-                                    <span class="ml-3">发布时间</span>
-                                    <button class="btn btn-primary btn-sm ml-3">下载文件</button>
+                                    <h5 class="mt-0" th:text="${resource.resourceName}">资源名称</h5>
+                                    <span th:text="${'文件大小:'+#numbers.formatDecimal(resource.resourceSize/1024.0/1024.0,1,2)}+'MB'">文件大小</span>
+                                    <span class="ml-3" th:text="${'上传时间:'+#dates.format(resource.uploadTime,'yyyy-MM-dd')}">发布时间</span>
+                                    <a th:href="@{${resource.resourceUrl}}">
+                                        <button class="btn btn-primary btn-sm ml-3">下载文件</button>
+                                    </a>
                                 </div>
-                                <a href="www.baidu.com"></a>
-                            </div>
-                        </li>
-                        <li class="media mt-1 list-group-item">
-                            <div class="media">
-                                <div class="media-left media-middle">
-                                    <img src="img/resources.png" alt="" class="mr-3 img-thumbnail mt-2 ml-2" width="60" height="60">
-                                </div>
-                                <div class="media-body">
-                                    <h5 class="mt-0">资源名称</h5>
-                                    <span>文件大小</span>
-                                    <span class="ml-3">发布时间</span>
-                                    <button class="btn btn-primary btn-sm ml-3">下载文件</button>
-                                </div>
-                                <a href="www.baidu.com"></a>
                             </div>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </div>
+        <div class="container bg-white" th:unless="${message}">
+            <div class="col-12 text-center" >
+                <div class="d-flex justify-content-center">
+                    <img src="/img/noresources.png" style="width: 350px;height: 350px">
+                </div>
+                <h5>没有任何资源</h5>
+            </div>
+        </div>
+
     </div>
 
 </body>
@@ -62,11 +54,11 @@
         $('.ziyuan').addClass("active");
         $('.huodong').removeClass("active");
 
-        $("ul li").click(function(){
-            /*当前标签下的a标签*/
-            var obj = $(this).children("a");
-            /*获取第一个a标签，进行跳转*/
-            window.location.href=$(obj[0]).attr("href");
+        $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#newList li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
         });
     });
 </script>

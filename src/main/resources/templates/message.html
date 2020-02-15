@@ -135,13 +135,6 @@
     $(function () {
         $('.xiaoxi').addClass("active");
         $('.huodong').removeClass("active");
-
-        $("ul li").click(function(){
-            /*当前标签下的a标签*/
-            var obj = $(this).children("a");
-            /*获取第一个a标签，进行跳转*/
-            window.location.href=$(obj[0]).attr("href");
-        });
     });
 </script>
 </html>
