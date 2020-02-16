@@ -13,28 +13,97 @@
             <div class="row">
                 <div class="col-4 d-flex justify-content-center" style="border-right:1px solid #737383">
                     <div class="card border-primary" style="width: 165px">
-                        <img src="img/cloud.png" style="height: 165px" alt="" class="card-img-top">
+                        <img th:src="${course.courseUrl}" style="height: 165px" alt="" class="card-img-top">
                         <div class="card-body">
-                            <h5 class="card-title">教师姓名</h5>
+                            <h5 class="card-title" th:text="${course.teacherName}">教师姓名</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-8 text-center">
-                    <p class="mt-3">学校:这是学校名称</p>
-                    <p>院系</p>
-                    <p>班级</p>
-                    <p>课程</p>
-                    <p>学期</p>
-                    <button class="btn btn-outline-danger">退出班课</button>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <p>学校:</p>
+                        </div>
+                        <div class="col-6">
+                            <p th:text="${course.school}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <p>院系:</p>
+                        </div>
+                        <div class="col-6">
+                            <p th:text="${course.collegeDepartment}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <p>班级:</p>
+                        </div>
+                        <div class="col-6">
+                            <p th:text="${course.className}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <p>课程:</p>
+                        </div>
+                        <div class="col-6">
+                            <p th:text="${course.courseName}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <p>学期:</p>
+                        </div>
+                        <div class="col-6">
+                            <p th:text="${#dates.format(course.startTime,'yyyy-MM-dd')+'至'+#dates.format(course.endTime,'yyyy-MM-dd')}"></p>
+                        </div>
+                    </div>
+                    <!--<p class="mt-3" th:text="${'学校:'+course.school}">学校:这是学校名称</p>
+                    <p th:text="${'院系:'+course.collegeDepartment}">院系</p>
+                    <p th:text="${'班级:'+course.className}">班级</p>
+                    <p th:text="${'课程:'+course.courseName}">课程</p>
+                    <p th:text="${'学期:'+#dates.format(course.startTime,'yyyy-MM-dd')+'至'+#dates.format(course.endTime,'yyyy-MM-dd')}">学期</p>-->
+                    <div class="col-12 d-flex justify-content-center">
+                        <button class="btn btn-outline-danger" data-toggle="modal" data-target="#out_course">退出班课</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    退出班课模态框-->
+    <div class="modal fade" tabindex="-1" id="out_course" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <span>确定要退出该班课吗?退出之后所有信息都将被删除!</span>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button class="btn btn-danger" id="out">退出</button>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script>
+<script th:inline="javascript">
     $(function () {
         $('.xiangqing').addClass("active");
         $('.huodong').removeClass("active");
     });
+    $('#out').click(function () {
+        $.ajax({url:"/outCourse/"+[[${cid}]]+'/'+[[${course.teacherid}]],
+            success:function(result){
+                var data=JSON.parse(result);
+                if (data.message){
+                    window.location.href="/index";
+                }
+            }});
+    })
 </script>
 </html>

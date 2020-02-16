@@ -41,14 +41,14 @@ public class ResultService {
             resultDTO.setSelContent(selection.getSelContent());
                 //教师查看
             String selAna=selection.getSelAna();
-            if (selAna==null){
+            if (selAna==null|| selAna.equals("")){
                 resultDTO.setHaveAna(false);
             }else {
                 resultDTO.setHaveAna(true);
                 resultDTO.setSelAna(selAna);
             }
             String imgUrl=selection.getImgUrl();
-            if (imgUrl==null){
+            if (imgUrl==null||imgUrl.equals("")){
                 resultDTO.setHaveImg(false);
             }else {
                 resultDTO.setHaveImg(true);
@@ -99,22 +99,24 @@ public class ResultService {
             int chooseD=0;
             int correct=0;
             for (UserAnswers userAnswers1:userAnswers){
-                char[] userSelect=userAnswers1.getUserSelect().toCharArray();
-                for (int i=0;i<userSelect.length;i++){
-                    if (userSelect[i]=='A'){
-                        chooseA++;
-                    }
-                    if (userSelect[i]=='B'){
-                        chooseB++;
-                    }
-                    if (userSelect[i]=='C'){
-                        chooseC++;
-                    }
-                    if (userSelect[i]=='D'){
-                        chooseD++;
-                    }
-                    if (userAnswers1.getUserSelect().equals(selection.getCorrectOption())){
-                        correct++;
+                if (userAnswers1.getUserSelect()!=null){
+                    char[] userSelect=userAnswers1.getUserSelect().toCharArray();
+                    for (int i=0;i<userSelect.length;i++){
+                        if (userSelect[i]=='A'){
+                            chooseA++;
+                        }
+                        if (userSelect[i]=='B'){
+                            chooseB++;
+                        }
+                        if (userSelect[i]=='C'){
+                            chooseC++;
+                        }
+                        if (userSelect[i]=='D'){
+                            chooseD++;
+                        }
+                        if (userAnswers1.getUserSelect().equals(selection.getCorrectOption())){
+                            correct++;
+                        }
                     }
                 }
             }
@@ -126,7 +128,6 @@ public class ResultService {
             BigDecimal bigDecimal=new BigDecimal(accRate);
             accRate=bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             resultDTO.setAccRate((int) (accRate*100));
-            list.add(resultDTO);
             if (teacherid!=uid){
                 //学生查看
                 UserAnswersKey key = new UserAnswersKey();
@@ -135,6 +136,7 @@ public class ResultService {
                 UserAnswers userAnswers1 = userAnswersMapper.selectByPrimaryKey(key);
                 resultDTO.setYourOption(userAnswers1.getUserSelect());
             }
+            list.add(resultDTO);
         }
         Comparator<ResultDTO> bySelNum=Comparator.comparing(ResultDTO::getSelNum);
         list.sort(bySelNum);
@@ -154,9 +156,11 @@ public class ResultService {
             key.setUid(uid);
             UserAnswers userAnswers = userAnswersMapper.selectByPrimaryKey(key);
             //查询该选择题
-            Selection selection = selectionMapper.selectByPrimaryKey(selectActivity.getSelId());
-            if (userAnswers.getUserSelect().equals(selection.getCorrectOption())){
-                score++;
+            if (userAnswers.getUserSelect()!=null&&!userAnswers.getUserSelect().equals("")){
+                Selection selection = selectionMapper.selectByPrimaryKey(selectActivity.getSelId());
+                if (userAnswers.getUserSelect().equals(selection.getCorrectOption())){
+                    score++;
+                }
             }
         }
         return score;

@@ -49,7 +49,10 @@
                                 <P th:unless="${selection.DTrue}" th:text="${'D:'+selection.d}">A:选项D</P>
                             </div>
                             <span th:text="${'正确答案:'+selection.correctOption}">正确答案:B</span>
-                            <span class="ml-3" th:if="${teacherid}!=${session.user.uid}" th:text="${'你的答案:'+selection.yourOption}">你的答案:A</span>
+                            <span th:if="${teacherid}!=${session.user.uid}">
+                                <span class="ml-3" th:if="${selection.yourOption}!=null" th:text="${'你的答案:'+selection.yourOption}">你的答案:A</span>
+                                <span class="ml-3" th:if="${selection.yourOption}==null" th:text="${'你的答案:未作答'}">你的答案:A</span>
+                            </span>
                             <span class="ml-3" th:text="${'正确率:'+selection.accRate}+'%'">正确率:49%</span>
                             <span class="ml-3" th:text="${'A:'+selection.chooseA+'人'}">A:1人</span>
                             <span class="ml-3" th:text="${'B:'+selection.chooseB+'人'}">B:1人</span>
