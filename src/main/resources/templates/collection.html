@@ -15,29 +15,69 @@
                     <hr>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" th:if="${message}">
                 <div class="col-12">
                     <input class="form-control" id="demo" type="text" placeholder="请输入项想要搜索的问题">
                 </div>
                 <div class="col-12" style="max-height: 800px;overflow: auto">
                     <ul class="list-group" id="newList">
-                        <li class="list-group-item">
+                        <li class="list-group-item" th:each="selection:${selections}">
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between bg-light">
-                                    <span>课程名称</span>
-                                    <a href="">删除</a>
+                                    <span th:text="${selection.courseName}">课程名称</span>
+                                    <a href="" th:attr="selId=${selection.selId}" id="delete_collection" data-toggle="modal" data-target="#delete">删除</a>
                                 </div>
                             </div>
-                            <p>题干</p>
-                            <img src="img/logo.png" alt="" style="max-height: 250px;max-height: 250px">
-                            <p>A:选项A</p>
-                            <p class="text-success">B:选项B</p>
-                            <p>C:选项C</p>
-                            <p>D:选项D</p>
+                            <p th:text="${selection.selContent}">题干</p>
+                            <img th:if="${selection.haveImg}" th:src="@{${selection.imgUrl}}" alt="" style="max-height: 250px;max-height: 250px">
+                            <div>
+                                <p th:if="${selection.aTrue}" th:text="${'A:'+selection.a}" class="text-success">A:选项A</p>
+                                <p th:unless="${selection.aTrue}" th:text="${'A:'+selection.a}">A:选项A</p>
+                            </div>
+                            <div>
+                                <p th:if="${selection.bTrue}" th:text="${'B:'+selection.b}" class="text-success">B:选项B</p>
+                                <p th:unless="${selection.bTrue}" th:text="${'B:'+selection.b}">B:选项B</p>
+                            </div>
+                            <div th:if="${selection.haveC}">
+                                <p th:if="${selection.cTrue}" th:text="${'C:'+selection.c}" class="text-success">C:选项C</p>
+                                <p th:unless="${selection.cTrue}" th:text="${'C:'+selection.c}">C:选项C</p>
+                            </div>
+                            <div th:if="${selection.haveD}">
+                                <p  th:if="${selection.dTrue}" th:text="${'D:'+selection.d}" class="text-success">D:选项D</p>
+                                <p th:unless="${selection.dTrue}" th:text="${'D:'+selection.d}">D:选项D</p>
+                            </div>
                             <hr>
-                            <p>解析:</p>
+                            <p th:if="${selection.haveAna}" th:text="${'题目解析:'+selection.selAna}">解析:</p>
+                            <p th:unless="${selection.haveAna}" th:text="${'题目解析:暂无解析'}">解析:</p>
                         </li>
                     </ul>
+                </div>
+            </div>
+            <div class="row" th:unless="${message}">
+                <div class="col-12 text-center">
+                    <div class="d-flex justify-content-center">
+                        <img src="/img/nocollection.png" alt="" style="height: 350px;width: 350px">
+                    </div>
+                    <p>暂无收藏</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    是否删除收藏的题目-->
+    <div class="modal fade" tabindex="-1" id="delete" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    确认要删除该题目吗?
+                    <span id="selId" hidden="hidden"></span>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" id="sub_delete">确定</button>
                 </div>
             </div>
         </div>
@@ -52,5 +92,20 @@
             });
         });
     });
+    $('#delete_collection').click(function () {
+       var selId=parseInt($('#delete_collection').attr('selId'));
+       $('#selId').text(selId);
+    });
+    $('#sub_delete').click(function () {
+        var selId=parseInt($('#selId').text());
+        $.ajax({url:"/deleteCollection/"+selId,
+            success:function(result){
+                var data=$.parseJSON(result);
+                if (data.message){
+                    alert("删除成功");
+                    window.location.reload();
+                }
+            }});
+    })
 </script>
 </html>

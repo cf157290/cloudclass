@@ -84,9 +84,6 @@
                                         <input type="checkbox" value="D">
                                         <span>D:</span><span th:text="${selection.d}">D:选项D</span>
                                     </label>
-                                    <div>
-                                        <a href="" data-toggle="modal" data-target="#shoucang">收藏题目</a>
-                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -115,24 +112,6 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal" id="cancel">取消</button>
                     <button class="btn btn-primary" id="sub_selections">确定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-<!--是否收藏-->
-    <div class="modal fade" tabindex="-1" id="shoucang" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">提示</h5>
-                    <button class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    确认要收藏题目吗?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary">确定</button>
                 </div>
             </div>
         </div>

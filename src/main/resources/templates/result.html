@@ -58,6 +58,7 @@
                             <span class="ml-3" th:text="${'B:'+selection.chooseB+'人'}">B:1人</span>
                             <span class="ml-3" th:text="${'C:'+selection.chooseC+'人'}">C:1人</span>
                             <span class="ml-3" th:text="${'D:'+selection.chooseD+'人'}">D:1人</span>
+                            <div class="mt-1"><a href="" data-toggle="modal" data-target="#shoucang" id="collection" th:attr="selId=${selection.selId}">收藏题目</a></div>
                             <hr>
                             <span th:if="${selection.haveAna}" th:text="${'题目解析:'+selection.selAna}">解析:</span>
                             <span th:unless="${selection.haveAna}" th:text="${'题目解析:无'}">解析:</span>
@@ -65,7 +66,64 @@
                     </ul>
                 </div>
             </div>
+            <button hidden id="success_collection" data-toggle="modal" data-target="#shoucang_success"></button>
+        </div>
+    </div>
+    <!--是否收藏-->
+    <div class="modal fade" tabindex="-1" id="shoucang" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    确认要收藏题目吗?
+                    <span id="selId" hidden="hidden"></span>
+                    <p id="collection_message" class="text-danger"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" id="cancel_collection">取消</button>
+                    <button class="btn btn-primary" id="sub_collection">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    收藏成功模态框-->
+    <div class="modal fade" tabindex="-1" id="shoucang_success" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    收藏成功!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+<script>
+    $('#collection').click(function () {
+        $('#selId').html($('#collection').attr('selId'));
+    });
+    $('#sub_collection').click(function () {
+        var selId=parseInt($('#selId').text());
+        $.ajax({url:"/collectionSelect/"+selId,
+            success:function(result){
+                var data=$.parseJSON(result);
+                if (data.message){
+                    $('#cancel_collection').trigger("click");
+                    $('#success_collection').trigger("click");
+                }else {
+                    //已经收藏过该题目
+                    $('#collection_message').html("您已经收藏过该题目了,请勿重复收藏!");
+                }
+            }});
+    })
+</script>
 </html>
