@@ -35,7 +35,17 @@ public class LoginController {
     //@Autowired
    // UserDTO userDTO;
     @PostMapping("/register")
-    public String register(RegisterDTO registerDTO){
+    public String register(RegisterDTO registerDTO,
+                           Model model){
+        UserExample example = new UserExample();
+        example.createCriteria().andEmailEqualTo(registerDTO.getEmail());
+        long count = userMapper.countByExample(example);
+        if (count!=0){
+            //邮箱已经被注册
+            model.addAttribute("isRegister",true);
+            return "/login";
+        }
+        model.addAttribute("isRegister",false);
         registerDTO.setCreateTime(new Date());
         User user=new User();
         user.setUsername(registerDTO.getUsername());
