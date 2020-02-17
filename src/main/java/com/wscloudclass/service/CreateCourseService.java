@@ -40,7 +40,7 @@ public class CreateCourseService {
                 course.setClassName(createCourseDTO.getClassName());
                 course.setCollegeDepartment(createCourseDTO.getCollegeDepartment());
                 course.setCourseName(createCourseDTO.getCourseName());
-                if (createCourseDTO.getFile()!=null){
+                if (createCourseDTO.getFile()!=null&&!createCourseDTO.getFile().getOriginalFilename().equals("")){
                     String imgUrl=aliyunOSSUtils.uploadImgFile(createCourseDTO.getFile());
                     course.setCourseUrl(imgUrl);
                 }

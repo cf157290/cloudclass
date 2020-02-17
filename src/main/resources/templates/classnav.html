@@ -37,7 +37,7 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="#" id="invite_link">班课邀请码</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#sign_in">发起签到</a>
-                                            <a class="dropdown-item" href="#">发布通知</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#course_info">发布通知</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#create_activity">发起活动</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#up">上传资源</a>
                                             <a class="dropdown-item" href="#">导出学生平时成绩</a>
@@ -63,7 +63,7 @@
                             <a th:href="@{'/activity/'+${cid}+'/'+${teacherid}}" class="nav-link huodong active" data-toggle="tab">活动</a>
                         </li>
                         <li class="nav-item navclass">
-                            <a href="message.html" class="nav-link xiaoxi" data-toggle="tab">消息</a>
+                            <a th:href="@{'/message/'+${cid}+'/'+${teacherid}+'/'+${teacherid}+'?redirect=1&click=0'}" class="nav-link xiaoxi" data-toggle="tab">消息</a>
                         </li>
                         <li class="nav-item navclass">
                             <a th:href="@{'/details/'+${cid}}" class="nav-link xiangqing" data-toggle="tab">详情</a>
@@ -129,6 +129,27 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        公告模态框-->
+        <div class="modal fade" tabindex="-1" id="course_info" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">提示</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" placeholder="请输入标题" id="info_title">
+                        <span class="text-danger" id="title_message"></span>
+                        <textarea id="info_content" cols="30" rows="3" placeholder="请输入通知内容" class="form-control mt-2"></textarea>
+                        <span class="text-danger" id="content_message"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal" id="course_info_cancel">关闭</button>
+                        <button class="btn btn-primary" id="submit_course_info">发布</button>
                     </div>
                 </div>
             </div>
@@ -347,6 +368,42 @@
             $('#submit_cancel').click(function () {
                 $('#submit_resource').attr("disabled",false);
                 $('#resource_message').html("");
+            });
+            $('#submit_course_info').click(function () {
+                var info_title=$('#info_title').val();
+                var info_content=$('#info_content').val();
+                if (info_title=='') {
+                    $('#title_message').html("此项不能为空");
+                    return;
+                }
+                if (info_content==''){
+                    $('#content_message').html("此项不能为空");
+                    return;
+                }
+                var map={};
+                map['infoTitle']=info_title;
+                map['infoContent']=info_content;
+                $.ajax({
+                    //请求方式
+                    type : "POST",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url : "/createCourseInfo/"+[[${cid}]]+"/"+[[${teacherid}]],
+                    //数据，json字符串
+                    data : JSON.stringify(map),
+                    //请求成功
+                    success : function(result) {
+                        var data=$.parseJSON(result);
+                        if (data.message){
+                            window.location.href="/message/"+[[${cid}]]+"/"+[[${teacherid}]]+'/'+[[${teacherid}]];
+                        }
+                        //var data=$.parseJSON(result);
+                    },
+                    //请求失败，包含具体的错误信息
+                    error : function(e){
+                    }
+                });
             })
         </script>
 

@@ -192,9 +192,12 @@ public class MemberService {
         }
         memberDTO.setScore(score);
         //查询用户参与的活动
-        PartiActivityExample partiActivityExample = new PartiActivityExample();
-        partiActivityExample.createCriteria().andUidEqualTo(uid).andActIdIn(activityIds);
-        long completeActivity = partiActivityMapper.countByExample(partiActivityExample);
+        long completeActivity=0;
+        if (activityIds.size()>0){
+            PartiActivityExample partiActivityExample = new PartiActivityExample();
+            partiActivityExample.createCriteria().andUidEqualTo(uid).andActIdIn(activityIds);
+            completeActivity = partiActivityMapper.countByExample(partiActivityExample);
+        }
         memberDTO.setCompleteActivity((int) completeActivity);
         //查询班课中的资源
         CourseResourcesExample courseResourcesExample = new CourseResourcesExample();

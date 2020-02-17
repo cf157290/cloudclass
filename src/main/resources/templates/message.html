@@ -14,6 +14,9 @@
             height: 430px;
         }
     }
+    #newList li:hover{
+        cursor: pointer;
+    }
 </style>
 <body>
     <div th:insert="~{navigation::nav}"></div>
@@ -23,26 +26,31 @@
             <div class="row">
                 <div class="col-2">
                     <div class="nav nav-pills flex-column">
-                        <a href="#tab1" class="nav-link active" data-toggle="tab">班课通知</a>
-                        <a href="#tab2" class="nav-link" data-toggle="tab">消息</a>
+                        <button href="#tab1" class="nav-link active btn" data-toggle="tab" id="myCourseInfo">班课通知</button>
+                        <button href="#tab2" class="nav-link btn" data-toggle="tab" id="myMessage" th:attr="disabled=${disabled}">消息</button>
                     </div>
 
                 </div>
                 <div class="col-10">
                     <div class="tab-content">
-                        <div class="tab-pane fade show active"style="height: 500px; overflow: auto" id="tab1">
+                        <div class="tab-pane fade show active" style="height: 500px; overflow: auto" id="tab1">
 
-                            <ul class="list-group">
+                            <ul class="list-group" th:if="${message}">
 <!--                                通知列表-->
-                                <li class="list-group-item">
+                                <li class="list-group-item" th:each="courseInfo:${courseInfos}">
                                     <div class="card bg-light">
-                                        <h4 class="card-header">标题</h4>
-                                        <small class="card-title text-info">发布时间</small>
-                                        <p class="card-text">通知内容</p>
+                                        <h4 class="card-header" th:text="${courseInfo.infoTitle}">标题</h4>
+                                        <small class="card-title text-info pl-2" th:text="${'发布时间:'+#dates.format(courseInfo.releaseTime,'yyyy-MM-dd')}">发布时间</small>
+                                        <p class="card-text pl-2" th:text="${courseInfo.infoContent}">通知内容</p>
                                     </div>
                                 </li>
-
                             </ul>
+                            <div class="text-center" th:unless="${message}">
+                                <div class="d-flex justify-content-center">
+                                    <img src="/img/noranking.png" alt="" style="width: 350px;height: 350px">
+                                </div>
+                                <p>暂时没有通知</p>
+                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="tab2" style="height: 500px">
@@ -50,29 +58,51 @@
                                 <div class="col-md-3 col-12 stu" style="overflow: auto">
 <!--                                    学生列表-->
                                     <ul class = "list-group" id = "newList">
-                                        <li class = "list-group-item bg-light">
+                                        <li class = "list-group-item bg-secondary" th:if="${teacherid}!= ${session.user.uid} and ${teacherid}==${toUser}">
+                                            <a th:href="@{'/message/'+${cid}+'/'+${teacherid}+'/'+${teacherid}+'?redirect=1&click=1'}"></a>
                                             <div class="media">
                                                 <div class="media-left media-middle">
-                                                    <a href="#">
-                                                        <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
-                                                    </a>
+                                                    <img class="media-object img-thumbnail" th:src="${teacher.imgUrl}" alt="" style="height: 60px;width: 60px">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                    <p class="media-heading">姓名</p>
-                                                    <span class="badge badge-info">1</span>
+                                                    <p class="media-heading" th:text="${'教师:'+teacher.userName}">教师</p>
+                                                    <!--<span class="badge badge-info">1</span>-->
                                                 </div>
                                             </div>
                                         </li>
-                                        <li class = "list-group-item">
+                                        <li class = "list-group-item" th:if="${teacherid}!= ${session.user.uid} and ${teacherid}!=${toUser}">
+                                            <a th:href="@{'/message/'+${cid}+'/'+${teacherid}+'/'+${teacherid}+'?redirect=1&click=1'}"></a>
                                             <div class="media">
                                                 <div class="media-left media-middle">
-                                                    <a href="#">
-                                                        <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
-                                                    </a>
+                                                    <img class="media-object img-thumbnail" th:src="${teacher.imgUrl}" alt="" style="height: 60px;width: 60px">
                                                 </div>
                                                 <div class="media-body ml-3">
-                                                    <p class="media-heading">姓名</p>
-                                                    <span class="badge badge-info">1</span>
+                                                    <p class="media-heading" th:text="${'教师:'+teacher.userName}">教师</p>
+                                                    <!--<span class="badge badge-info">1</span>-->
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class = "list-group-item bg-secondary" th:each="messageMember:${messageMembers}" th:if="${messageMember.uid}==${toUser}">
+                                            <a th:href="@{'/message/'+${cid}+'/'+${teacherid}+'/'+${messageMember.uid}+'?redirect=2&click=1'}"></a>
+                                            <div class="media" th:if="${messageMember.uid}!=${session.user.uid}">
+                                                <div class="media-left media-middle">
+                                                    <img class="media-object img-thumbnail" th:src="${messageMember.imgUrl}" alt="" style="height: 60px;width: 60px">
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <p class="media-heading" th:text="${messageMember.userName}">姓名</p>
+                                                    <span class="badge badge-info" th:text="${messageMember.messageCount}">1</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class = "list-group-item" th:each="messageMember:${messageMembers}" th:if="${messageMember.uid}!=${toUser}">
+                                            <a th:href="@{'/message/'+${cid}+'/'+${teacherid}+'/'+${messageMember.uid}+'?redirect=2&click=1'}"></a>
+                                            <div class="media" th:if="${messageMember.uid}!=${session.user.uid}">
+                                                <div class="media-left media-middle">
+                                                    <img class="media-object img-thumbnail" th:src="${messageMember.imgUrl}" alt="" style="height: 60px;width: 60px">
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <p class="media-heading" th:text="${messageMember.userName}">姓名</p>
+                                                    <span class="badge badge-info" th:text="${messageMember.messageCount}">1</span>
                                                 </div>
                                             </div>
                                         </li>
@@ -81,43 +111,43 @@
                                 <div class="col-md-9 col-12" style="border: 1px solid #4e555b;border-radius: 10px">
                                     <div class="row">
                                         <div class="col-12" style="height: 450px;overflow: auto" >
-                                            <ul class="list-group">
-                                                <li class="list-group-item"style="border: white 0px solid">
+                                            <ul class="list-group" id="message_list">
+                                                <!--<li class="list-group-item"style="border: white 0px solid">
                                                     <div class="media">
                                                         <div class="media-left media-top">
                                                             <a href="#">
-                                                                <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                                                <img class="media-object img-thumbnail" src="/img/people.png" alt="" style="height: 60px;width: 60px">
                                                             </a>
                                                         </div>
                                                         <div class="media-body ml-3">
-                                                            <small class="media-heading">时间</small>
-                                                            <p class="media-body text-info">内容</p>
+                                                            <small class="media-heading text-info">时间</small>
+                                                            <p class="media-body">内容</p>
                                                         </div>
                                                     </div>
                                                 </li>
                                                 <li class="list-group-item" style="border: white 0px solid">
                                                     <div class="media">
                                                         <div class="media-body text-right mr-3">
-                                                            <small class="media-heading">时间</small>
-                                                            <p class="media-body text-info">内容</p>
+                                                            <small class="media-heading text-info">时间</small>
+                                                            <p class="media-body">内容</p>
                                                         </div>
                                                         <div class="media-top">
                                                             <a href="#">
-                                                                <img class="media-object img-thumbnail" src="img/people.png" alt="" style="height: 60px;width: 60px">
+                                                                <img class="media-object img-thumbnail" src="/img/people.png" alt="" style="height: 60px;width: 60px">
                                                             </a>
                                                         </div>
                                                     </div>
-
-                                                </li>
+                                                </li>-->
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-8 col-lg-10">
-                                            <input type="text" name="" id="" class="form-control">
+                                            <input type="text" name="" id="userMessage" class="form-control">
+                                            <span id="userMessage_message" class="text-danger"></span>
                                         </div>
                                         <div class="col-4 col-lg-2">
-                                            <button class="btn btn-primary">发送</button>
+                                            <button class="btn btn-primary" id="send_message">发送</button>
                                         </div>
                                     </div>
 
@@ -131,10 +161,133 @@
         </div>
     </div>
 </body>
-<script>
+<script th:inline="javascript">
     $(function () {
         $('.xiaoxi').addClass("active");
         $('.huodong').removeClass("active");
+        var click=[[${click}]];
+        if (click==1){
+            $('#myMessage').trigger('click');
+        }
     });
+    var interval;
+    $('#myMessage').click(function () {
+        interval=setInterval(function () {
+            $.ajax({url:"/getMessage/"+[[${cid}]]+'/'+[[${teacherid}]]+'/'+[[${uid}]],
+                success:function(result){
+                    var uid=[[${uid}]];
+                    var data=JSON.parse(result);
+                    var str="";
+                    $.each(data,function (key, value) {
+                        if (value.sendId==[[${session.user.uid}]]){
+                            //自己发送的内容
+                            str+= '<li class="list-group-item" style="border: white 0px solid">\n' +
+                                '                                                    <div class="media">\n' +
+                                '                                                        <div class="media-body text-right mr-3">\n' +
+                                '                                                            <small class="media-heading text-info">'+timestampToTime(value.sendTime)+value.userName+'</small>\n' +
+                                '                                                            <p class="media-body">'+value.messageContent+'</p>\n' +
+                                '                                                        </div>\n' +
+                                '                                                        <div class="media-top">\n' +
+                                '                                                            <a href="#">\n' +
+                                '                                                                <img class="media-object img-thumbnail" src="'+value.imgUrl+'" alt="" style="height: 60px;width: 60px">\n' +
+                                '                                                            </a>\n' +
+                                '                                                        </div>\n' +
+                                '                                                    </div>\n' +
+                                '                                                </li>';
+                        } else {
+                            str+='<li class="list-group-item" style="border: white 0px solid">\n' +
+                                '                                                    <div class="media">\n' +
+                                '                                                        <div class="media-left media-top">\n' +
+                                '                                                            <a href="#">\n' +
+                                '                                                                <img class="media-object img-thumbnail" src="'+value.imgUrl+'" alt="" style="height: 60px;width: 60px">\n' +
+                                '                                                            </a>\n' +
+                                '                                                        </div>\n' +
+                                '                                                        <div class="media-body ml-3">\n' +
+                                '                                                            <small class="media-heading text-info">'+timestampToTime(value.sendTime)+value.userName+'</small>\n' +
+                                '                                                            <p class="media-body">'+value.messageContent+'</p>\n' +
+                                '                                                        </div>\n' +
+                                '                                                    </div>\n' +
+                                '                                                </li>';
+                        }
+                    });
+                    $('#message_list').html(str);
+                }});
+        },2000);
+    });
+    $('#myCourseInfo').click(function () {
+       window.clearInterval(interval);
+    });
+    $('#send_message').click(function () {
+        var message=$('#userMessage').val();
+        if (message==''){
+            $('#userMessage_message').html("此项不能为空");
+            return;
+        } else {
+            $('#userMessage_message').html("");
+            $('#userMessage').val("");
+        }
+        $('#message_list').append('<li class="list-group-item" style="border: white 0px solid">\n' +
+            '                                                    <div class="media">\n' +
+            '                                                        <div class="media-body text-right mr-3">\n' +
+            '                                                            <small class="media-heading text-info">'+timestampToTime(new Date())+'</small>\n' +
+            '                                                            <p class="media-body">'+message+'</p>\n' +
+            '                                                            <p class="media-body text-success">消息发送中...</p>\n' +
+            '                                                        </div>\n' +
+            '                                                        <div class="media-top">\n' +
+            '                                                            <a href="#">\n' +
+            '                                                                <img class="media-object img-thumbnail" src="/img/people.png" alt="" style="height: 60px;width: 60px">\n' +
+            '                                                            </a>\n' +
+            '                                                        </div>\n' +
+            '                                                    </div>\n' +
+            '                                                </li>');
+        map={};
+        map['message']=message;
+        $.ajax({
+            //请求方式
+            type : "POST",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //dataType:"json",
+            //请求地址
+            url : "/submitUserMessage/"+[[${cid}]]+"/"+[[${teacherid}]]+"/"+[[${uid}]],
+            //数据，json字符串
+            data : JSON.stringify(map),
+            //请求成功
+            success : function(result) {
+                var data=$.parseJSON(result);
+                if (data.message){
+
+                }else {
+                    //发送失败
+                    $('#userMessage_message').html("信息发送失败,请重试!");
+                }
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+            }
+        });
+
+    });
+    $("#newList li").click(function(){
+        /*当前标签下的a标签*/
+        var obj = $(this).children("a");
+        /*获取第一个a标签，进行跳转*/
+        window.location.href=$(obj[0]).attr("href");
+    });
+    /**
+     * 日期格式化
+     * @param timestamp
+     * @returns {*}
+     */
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = (date.getMinutes() < 10 ? '0'+(date.getMinutes()) : date.getMinutes()) + ':';
+        s = (date.getSeconds() < 10 ? '0'+(date.getSeconds()) : date.getSeconds());
+        return Y+M+D+h+m+s;
+    }
 </script>
 </html>
