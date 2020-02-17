@@ -1,6 +1,7 @@
 package com.wscloudclass.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.wscloudclass.component.AliyunOSSUtils;
 import com.wscloudclass.dto.ScoreDTO;
 import com.wscloudclass.dto.SubmitUserScoreDTO;
 import com.wscloudclass.dto.UserDTO;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,8 @@ public class ScoreController {
     ScoreService scoreService;
     @Autowired
     ActivityMapper activityMapper;
+    @Autowired
+    AliyunOSSUtils aliyunOSSUtils;
     @GetMapping("/score/{cid}/{teacherid}/{actId}")
     public String score(@PathVariable(name = "cid")Long cid,
                         @PathVariable(name = "teacherid")Long teacherid,
@@ -42,6 +46,7 @@ public class ScoreController {
         if (list.size()>0){
             model.addAttribute("scores",list);
             model.addAttribute("canSubmit",true);
+            model.addAttribute("isnone",false);
         }else {
             model.addAttribute("canSubmit",false);
             model.addAttribute("isnone",true);
@@ -68,5 +73,18 @@ public class ScoreController {
             map.put("message",false);
             return JSON.toJSONString(map);
         }
+    }
+    @GetMapping("/batchDownload/{cid}/{teacherid}/{actId}")
+    public void batchDownload(@PathVariable(name = "cid")Long cid,
+                              @PathVariable(name = "teacherid")Long teacherid,
+                              @PathVariable(name = "actId")Long actId,
+                              HttpServletRequest request,
+                              HttpServletResponse response){
+        UserDTO user = (UserDTO) request.getSession().getAttribute("user");
+        if (!teacherid.equals(user.getUid())){
+            throw new CustomizeException(CustomizeErrorCode.ERROR_CREATE_ACTIVITY);
+        }
+        List<String> list=scoreService.getFileNameList(actId);
+        aliyunOSSUtils.batchDownLoadOssFile(list,"文件列表",response);
     }
 }

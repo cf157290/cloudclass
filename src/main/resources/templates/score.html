@@ -16,7 +16,7 @@
                         <div th:text="${actName}">活动名称</div>
                         <a th:href="@{'/ranking/'+${cid}+'/'+${teacherid}+'/'+${actId}}">查看排名</a>
                     </span>
-                    <button class="btn btn-primary">下载全部文件</button>
+                    <button class="btn btn-primary" th:unless="${isnone}" id="batch_download">下载全部文件</button>
                 </div>
                 <span class="message text-danger ml-3"></span>
             </div>
@@ -54,6 +54,14 @@
                 </div>
                 <div class="col-12 d-flex justify-content-center" th:if="${canSubmit}">
                     <button class="btn btn-primary" style="width: 200px" id="subScore">提交</button>
+                </div>
+            </div>
+            <div class="row" th:if="${isnone}">
+                <div class="col-12 text-center">
+                    <div class="d-flex justify-content-center">
+                        <img src="/img/noranking.png" style="width: 350px;height: 350px">
+                    </div>
+                    <h5>暂无提交记录</h5>
                 </div>
             </div>
         </div>
@@ -95,6 +103,12 @@
                 $('#message').html("发送请求失败,请检查您的网络状态!");
             }
         });
-    })
+    });
+    $('#batch_download').click(function () {
+        $.ajax({url:"/batchDownload/"+[[${cid}]]+'/'+[[${teacherid}]]+'/'+[[${actId}]],
+            success:function(result){
+                window.open("/batchDownload/"+[[${cid}]]+'/'+[[${teacherid}]]+'/'+[[${actId}]]);
+            }});
+    });
 </script>
 </html>

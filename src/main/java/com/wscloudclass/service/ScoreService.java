@@ -101,4 +101,31 @@ public class ScoreService {
         }
         return true;
     }
+
+    public List<String> getFileNameList(Long actId) {
+        List<String> list=new ArrayList<>();
+        //查找活动信息
+        Activity activity = activityMapper.selectByPrimaryKey(actId);
+        //查找文件列表
+        FileScoreExample example = new FileScoreExample();
+        example.createCriteria().andDesIdEqualTo(activity.getDesId());
+        List<FileScore> fileScores = fileScoreMapper.selectByExample(example);
+        List<Long> fileIds=new ArrayList<>();
+        for (FileScore fileScore:fileScores){
+            fileIds.add(fileScore.getFileId());
+        }
+        if (fileIds.size()>0){
+            //文件信息列表
+            SubmitFileExample submitFileExample = new SubmitFileExample();
+            submitFileExample.createCriteria().andFileIdIn(fileIds);
+            List<SubmitFile> submitFiles = submitFileMapper.selectByExample(submitFileExample);
+            for (SubmitFile submitFile:submitFiles){
+                String fileUrl=submitFile.getFileUrl();
+                String[] splitFileUrl=fileUrl.split("/");
+                String fileName=splitFileUrl[splitFileUrl.length-1];
+                list.add(fileName);
+            }
+        }
+        return list;
+    }
 }
