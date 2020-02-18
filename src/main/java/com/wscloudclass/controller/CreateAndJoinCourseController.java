@@ -31,18 +31,18 @@ public class CreateAndJoinCourseController {
     CourseMapper courseMapper;
     @RequestMapping("/create")
     public String create(){
-        return "/create";
+        return "create";
     }
     @RequestMapping("/join")
     public String join(){
-        return "/join";
+        return "join";
     }
     @PostMapping("/createCourse")
     public String createCourse(CreateCourseDTO createCourseDTO, HttpServletRequest request) throws ParseException, IOException {
         boolean flag=createCourseService.createCourse(createCourseDTO,request);
         if (flag){
             //创建成功
-            return "redirect:index";
+            return "redirect:/index";
         }else {
             //创建失败
             throw  new CustomizeException(CustomizeErrorCode.ERROR_CREATE_COURSE);

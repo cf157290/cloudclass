@@ -25,6 +25,6 @@ public class IndexController {
             model.addAttribute("uid",user.getUid());
             model.addAttribute("courses",list);
         }
-        return "/index";
+        return "index";
     }
 }

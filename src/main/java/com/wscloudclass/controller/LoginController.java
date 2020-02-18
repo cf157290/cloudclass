@@ -93,7 +93,7 @@ public class LoginController {
             return "redirect:/index";
         }
         model.addAttribute("erruser",true);
-        return "/login";
+        return "login";
     }
     @RequestMapping("/logOut")
     public String logOut(HttpServletRequest request,HttpServletResponse response){
