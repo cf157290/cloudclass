@@ -69,4 +69,20 @@ public class UserInfoService {
         redisTemplate.opsForValue().set(cookie.getValue(),userDTO);
         redisTemplate.expire(cookie.getValue(),10, TimeUnit.DAYS);
     }
+
+    public boolean changePassword(String email, String oldPassword, String newPassword) {
+        UserExample example = new UserExample();
+        example.createCriteria().andEmailEqualTo(email).andPasswordEqualTo(oldPassword);
+        long count = userMapper.countByExample(example);
+        if (count==1){
+            User record = new User();
+            record.setPassword(newPassword);
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andEmailEqualTo(email);
+            userMapper.updateByExampleSelective(record, userExample);
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

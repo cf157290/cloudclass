@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网上班课-密码修改成功</title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p>密码修改成功！,3秒钟后页面将进行跳转</p>
+                <p>如果未跳转请 <a th:href="@{/}">点击这里</a> </p>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(
+        function () {
+            window.setTimeout(function () {
+                location.href="/";
+            },3000);
+        }
+    )
+</script>
+</html>

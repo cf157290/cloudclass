@@ -51,4 +51,20 @@ public class UserInfoController {
         map.put("message",true);
         return JSON.toJSONString(map);
     }
+    @GetMapping("/changePassword")
+    public String changePassword(){
+        return "changepassword";
+    }
+    @PostMapping("/submitPassword")
+    public String submitPassword(String email, String oldPassword, String newPassword,Model model){
+        boolean flag=userInfoService.changePassword(email,oldPassword,newPassword);
+        if (flag){
+            //修改成功
+            return "changesuccess";
+        }else {
+            //修改失败
+            model.addAttribute("message",true);
+            return "changepassword";
+        }
+    }
 }
