@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-between">
                     <h4 class="mt-3">用户信息</h4>
-                    <button class="btn btn-outline-primary mt-3">保存</button>
+                    <button class="btn btn-outline-primary mt-3" id="submit_user_info">保存</button>
 
                 </div>
             </div>
@@ -36,16 +36,16 @@
                                 <div class="col-4 text-right">
                                     <p>账号:</p>
                                     <p>姓名:</p>
-                                    <p>性别:</p>
+                                    <!--<p>性别:</p>-->
                                     <p>出生年份:</p>
                                     <p>工号/学号:</p>
                                     <p>所在的学校:</p>
                                     <p>所在的院系:</p>
                                 </div>
                                 <div class="col-4">
-                                    <p>账号</p>
-                                    <input class="form-control" placeholder="姓名">
-                                    <div class="row mb-3 mt-1">
+                                    <p th:text="${session.user.email}">账号</p>
+                                    <input class="form-control" id="user_name" th:placeholder="${session.user.userName}">
+                                    <!--<div class="row mb-3 mt-1">
                                         <div class="col-12">
                                             <div class="row">
                                                 <div class="col-6">
@@ -63,14 +63,14 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div>-->
 
 
 
-                                    <input class="form-control" placeholder="出生年月">
-                                    <input class="form-control" placeholder="学号/工号">
-                                    <input class="form-control" placeholder="所在的学校">
-                                    <input class="form-control" placeholder="所在的院系">
+                                    <input class="form-control" type="date" id="birthday" th:placeholder="${session.user.birthday}">
+                                    <input class="form-control" type="number" id="user_number" th:placeholder="${session.user.userNumber}">
+                                    <input class="form-control" id="school" th:placeholder="${session.user.school}">
+                                    <input class="form-control" id="college_department" th:placeholder="${session.user.collegeDepartment}">
                                 </div>
                             </div>
                         </div>
@@ -93,5 +93,35 @@
             maxFileSize: 1024//文件大小
         });
     });
+    $('#submit_user_info').click(function () {
+        var formData=new FormData();
+        var img=$('#input').get(0).files[0];
+        if (img){
+            formData.append('img',img);
+        }
+        var userName=$('#user_name').val();
+        var userNumber=$('#user_number').val();
+        var birthday=$('#birthday').val();
+        var school=$('#school').val();
+        var collegeDepartment=$('#college_department').val();
+        formData.append('userName',userName);
+        formData.append('userNumber',userNumber);
+        formData.append('school',school);
+        formData.append('birthday',birthday);
+        formData.append('collegeDepartment',collegeDepartment);
+        $.ajax({
+            url: "/updateUserInfo",
+            data: formData,
+            type: "POST",
+            contentType: false,//这里
+            processData: false,//这两个一定设置为false
+            success: function (result) {
+                var data=$.parseJSON(result);
+                if (data.message){
+                    window.location.href="/userInfo";
+                }
+            }
+        });
+    })
 </script>
 </html>

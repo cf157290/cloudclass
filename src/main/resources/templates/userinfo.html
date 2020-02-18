@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-between">
                     <h4 class="mt-3">用户信息</h4>
-                        <button class="btn btn-outline-primary mt-3">编辑</button>
+                        <a class="btn btn-outline-primary mt-3" th:href="@{/modInfo}">编辑</a>
 
                 </div>
             </div>
@@ -58,7 +58,7 @@
                                     <p>出生年份:</p>
                                 </div>
                                 <div class="col-4">
-                                <p th:text="${userInfo.birthday}">出生年份</p>
+                                <p th:text="${#dates.format(userInfo.birthday,'yyyy-MM-dd')}">出生年份</p>
                                 </div>
                             </div>
                             <div class="row">
