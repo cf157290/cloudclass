@@ -51,4 +51,19 @@ public class ResourceController {
         }
         return "resources";
     }
+
+    @ResponseBody
+    @GetMapping("/download/{cid}/{teacherid}/{resourceId}")
+    public String download(@PathVariable(name = "cid")Long cid,
+                         @PathVariable(name = "teacherid")Long teacherid,
+                         @PathVariable(name = "resourceId")Long resourceId,
+                         HttpServletRequest request){
+        UserDTO user = (UserDTO) request.getSession().getAttribute("user");
+        if (!teacherid.equals(user.getUid())){
+            resourceService.updateDownload(user.getUid(),resourceId);
+        }
+        Map<String,Boolean>map=new HashMap<>();
+        map.put("message",true);
+        return JSON.toJSONString(map);
+    }
 }

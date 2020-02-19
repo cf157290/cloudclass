@@ -9,6 +9,7 @@ import java.util.Date;
  */
 @Data
 public class ResourceDTO {
+    private Long resourceId;
     private String resourceName;
     private Integer resourceSize;
     private Date uploadTime;

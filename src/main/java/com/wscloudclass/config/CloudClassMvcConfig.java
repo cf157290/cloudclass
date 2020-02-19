@@ -19,7 +19,7 @@ public class CloudClassMvcConfig {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(loginInterceptor)
                         .addPathPatterns("/**")
-                        .excludePathPatterns("/","/login")
+                        .excludePathPatterns("/","/login","/register")
                         .excludePathPatterns("/css/*","/img/*","/js/*","/fonts/*");
             }
             @Override

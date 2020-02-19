@@ -32,8 +32,6 @@ public class LoginController {
     UserMapper userMapper;
     @Autowired
     RedisTemplate<Object,Object> redisTemplate;
-    //@Autowired
-   // UserDTO userDTO;
     @PostMapping("/register")
     public String register(RegisterDTO registerDTO,
                            Model model){
@@ -43,7 +41,7 @@ public class LoginController {
         if (count!=0){
             //邮箱已经被注册
             model.addAttribute("isRegister",true);
-            return "/login";
+            return "login";
         }
         model.addAttribute("isRegister",false);
         registerDTO.setCreateTime(new Date());

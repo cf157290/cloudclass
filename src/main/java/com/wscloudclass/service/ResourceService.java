@@ -3,11 +3,9 @@ package com.wscloudclass.service;
 import com.wscloudclass.component.AliyunOSSUtils;
 import com.wscloudclass.dto.ResourceDTO;
 import com.wscloudclass.mapper.CourseResourcesMapper;
+import com.wscloudclass.mapper.DownloadResourcesMapper;
 import com.wscloudclass.mapper.ResourcesMapper;
-import com.wscloudclass.model.CourseResourcesExample;
-import com.wscloudclass.model.CourseResourcesKey;
-import com.wscloudclass.model.Resources;
-import com.wscloudclass.model.ResourcesExample;
+import com.wscloudclass.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,8 @@ public class ResourceService {
     AliyunOSSUtils aliyunOSSUtils;
     @Autowired
     CourseResourcesMapper courseResourcesMapper;
+    @Autowired
+    DownloadResourcesMapper downloadResourcesMapper;
     @Transactional
     public boolean uploadResource(String fileName, MultipartFile file, Long cid) throws IOException {
         Resources record = new Resources();
@@ -83,6 +83,21 @@ public class ResourceService {
         }
         return list;
     }
+    @Transactional
+    public void updateDownload(Long uid, Long resourceId) {
+        DownloadResourcesExample example = new DownloadResourcesExample();
+        example.createCriteria().andUidEqualTo(uid).andResourceIdEqualTo(resourceId);
+        long count = downloadResourcesMapper.countByExample(example);
+        if (count==0){
+            //第一次下载
+            DownloadResources record = new DownloadResources();
+            record.setUid(uid);
+            record.setResourceId(resourceId);
+            record.setDownloadDate(new Date());
+            downloadResourcesMapper.insert(record);
+        }
+    }
+
     //随机生成id
     private String getRandomString(int length){
 

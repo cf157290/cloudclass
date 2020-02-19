@@ -1,6 +1,8 @@
 # maven ignore
 target/
 logs/
+application-prod.properties
+application-dev.properties
 
 # gradle ignore
 .gradle/
